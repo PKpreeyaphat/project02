@@ -62,7 +62,7 @@
                                     <p>
                                         <b>เลือกรายวิชา :</b>
                                     </p>
-                                    <select class="form-control show-tick" id="subject" oninput="loadTable();">
+                                    <select class="form-control show-tick" id="subject">
                                     <option>———กรุณาเลือก———</option>
                                     <?php foreach ($subject as $x) { ?>
                                         <option value="<?=$x->Subject_id?>"><?=$x->Subject_id.' '.$x->Subject_name?></option>
@@ -75,15 +75,8 @@
                                     <p>
                                         <b>เลือกห้อง :</b>
                                     </p>
-                                    <select class="form-control show-tick" id="Room_id" oninput="loadTable();">
+                                    <select class="form-control show-tick" id="room">
                                     <option>———กรุณาเลือก———</option>
-                                    <?php 
-                                        foreach ($getRoom as $resRoom) {
-                                    ?>
-                                        <option value="<?php echo $resRoom->Room_id ?>"><?php echo $resRoom->Room_name ?></option>
-                                    <?php 
-                                    }
-                                    ?>
                                     </select>
 
                                 </div>
@@ -91,8 +84,8 @@
                                     <p>
                                         <b>เลือกผู้รับผิดชอบ :</b>
                                     </p>
-                                    <select class="form-control show-tick" id="student" oninput="loadTable();">
-                                    <option>———กรุณาเลือก———</option>
+                                    <select class="form-control show-tick" id="student">
+                                    <option value=''>———กรุณาเลือก———</option>
                                     </select>
 
                                 </div>
@@ -123,6 +116,73 @@
     <!-- Waves Effect Plugin Js -->
     <script src="<?php echo base_url() ?>/plugins/node-waves/waves.js"></script>
 
+    <script type="text/javascript">
+        function loadTable(){
+            $.post('table/loadTable',{Room_id:""+$('select#room').val()+""},function(res){
+                $('div#loadTable').html(res);
+            });
+        }
+
+        $(function(){
+            var loadSection = function(){
+                var student  = $('#student').val(),
+                    subject = $('#subject').val()
+                if(student && subject){
+                    var data = {
+                        Subject_id: subject,
+                        Student_id: student
+                    }
+                    $.post('table/loadFreeTime', {data: data}, function(res){
+                        res = JSON.parse(res);
+                        console.log(res);
+                    })
+                }
+            }
+
+            $('#student').change(function(){
+                loadSection()
+            })
+
+            $('#subject').change(function(){
+                var data = {
+                    id: $(this).val()
+                }
+                $.post('table/loadRoom', {data: data}, function(res){
+                    res = JSON.parse(res)
+                    var html = ''
+                    for(var i in res){
+                        html += '<option value="'+res[i].Room_id+'">'+res[i].Room_name+'</option>'
+                    }
+                    $('#room').html(html)
+                    data = {
+                        Subject_id: $('#subject').val()
+                    }
+                    $.post('table/loadStudent', {data: data}, function(res){
+                        res = JSON.parse(res)
+                        var html = ''
+                        for(var i in res){
+                            html += '<option value="'+res[i].Student_id+'">'+res[i].Student_firstname+' '+res[i].Student_lastname+'</option>'
+                        }
+                        $('#student').html(html)
+                        $('#room').trigger('change')
+                    })
+                })
+            })
+
+            $('#room').change(function(){
+                var data = {
+                    Subject_id: $('#subject').val(),
+                    Room_id: $('#room').val()
+                }
+                $.post('table/loadSection', {data: data}, function(res){
+                    res = JSON.parse(res)
+                    console.log(res);
+                    loadSection()
+                })
+            })
+        })
+    </script>
+
     <!-- Custom Js -->
     <script src="<?php echo base_url() ?>/js/admin.js"></script>
     <script src="<?php echo base_url() ?>/js/pages/forms/basic-form-elements.js"></script>
@@ -137,13 +197,7 @@
     <!-- (Optional) Latest compiled and minified JavaScript translation files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-*.min.js"></script>
 
-    <script type="text/javascript">
-        function loadTable(){
-            $.post('table/loadTable',{Room_id:""+$('select#Room_id').val()+""},function(res){
-                $('div#loadTable').html(res);
-            });
-        }
-    </script>
+    
 
 </body>
 

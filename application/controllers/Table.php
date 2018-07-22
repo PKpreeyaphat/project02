@@ -15,6 +15,25 @@ class Table extends CI_Controller {
         
 	}
 
+	public function loadSection()
+	{
+		$this->load->model('Section_Model');
+		$data = $this->input->post('data');
+		$rs = $this->Section_Model->getTime($data);
+		echo json_encode($rs);
+	}
+
+	public function loadFreeTime()
+	{
+		$this->load->model('Register_Model');
+		$data = $this->input->post('data');
+		if(!isset($data['Semester_ID'])){
+			$data['Semester_ID'] = $this->CurrentSemester_Model->getSemester_ID();
+		}
+		$rs = $this->Register_Model->getFreeTime($data);
+		echo json_encode($rs);
+	}
+
 	public function loadRoom()
 	{
 		$this->load->model('Section_Model');
