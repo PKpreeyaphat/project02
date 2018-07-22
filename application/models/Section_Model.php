@@ -14,12 +14,27 @@ class Section_Model extends CI_Model {
 
     public function getSectionByID($id)
     {
-
         $this->db->join('Subject', 'Subject.Subject_id = Section.Subject_id', 'left');
         $this->db->where('Subject.Subject_id', $id);
         $res = $this->db->get('Section');
         return $res->result();
+    }
 
+    public function getStudent($data)
+    {
+        $this->db->join('Student', 'Student.Student_id = RegisterSubject.Student_id');
+        $this->db->where('RegisterSubject.Subject_id', $data['Subject_id']);
+        $this->db->where('RegisterSubject.Semester_ID', $data['Semester_ID']);
+        $res = $this->db->get('RegisterSubject');
+        return $res->result();
+    }
+
+    public function getRoom($id)
+    {
+        $this->db->join('Room', 'Room.Room_id = Section.Room_id');
+        $this->db->where('Subject.Subject_id', $id);
+        $res = $this->db->get('Section');
+        return $res->result();
     }
 
 

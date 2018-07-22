@@ -62,14 +62,11 @@
                                     <p>
                                         <b>เลือกรายวิชา :</b>
                                     </p>
-                                    <select class="form-control show-tick" id="Room_id" oninput="loadTable();">
+                                    <select class="form-control show-tick" id="subject" oninput="loadTable();">
                                     <option>———กรุณาเลือก———</option>
-                                    <?php 
-                                        foreach ($getRoom as $resRoom) {
-                                    ?>
-                                        <option value="<?php echo $resRoom->Room_id ?>"><?php echo $resRoom->Room_name ?></option>
-                                    <?php 
-                                    }
+                                    <?php foreach ($subject as $x) { ?>
+                                        <option value="<?=$x->Subject_id?>"><?=$x->Subject_id.' '.$x->Subject_name?></option>
+                                    <?php } ?>
                                     ?>
                                     </select>
 
@@ -94,15 +91,8 @@
                                     <p>
                                         <b>เลือกผู้รับผิดชอบ :</b>
                                     </p>
-                                    <select class="form-control show-tick" id="Room_id" oninput="loadTable();">
+                                    <select class="form-control show-tick" id="student" oninput="loadTable();">
                                     <option>———กรุณาเลือก———</option>
-                                    <?php 
-                                        foreach ($getRoom as $resRoom) {
-                                    ?>
-                                        <option value="<?php echo $resRoom->Room_id ?>"><?php echo $resRoom->Room_name ?></option>
-                                    <?php 
-                                    }
-                                    ?>
                                     </select>
 
                                 </div>
