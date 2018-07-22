@@ -28,6 +28,16 @@ class Section_Model extends CI_Model {
         return $res->result();
     }
 
+    public function getRegisterSubject($data)
+    {
+        $this->db->join('Student', 'Student.Student_id = RegisterSubject.Student_id');
+        $this->db->where('RegisterSubject.Subject_id', $data['Subject_id']);
+        $this->db->where('RegisterSubject.Semester_ID', $data['Semester_ID']);
+        $this->db->where('RegisterSubject.Status', '1');
+        $res = $this->db->get('RegisterSubject');
+        return $res->result();
+    }
+
     public function getStudent($data)
     {
         $this->db->join('Student', 'Student.Student_id = RegisterSubject.Student_id');

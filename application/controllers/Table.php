@@ -50,7 +50,7 @@ class Table extends CI_Controller {
 		if(!isset($data['Semester_ID'])){
 			$data['Semester_ID'] = $this->CurrentSemester_Model->getSemester_ID();
 		}
-		$rs = $this->Section_Model->getStudent($data);
+		$rs = $this->Section_Model->getRegisterSubject($data);
 		echo json_encode($rs);
 	}
 

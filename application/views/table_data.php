@@ -33,6 +33,17 @@
 
     <style>
     table.dataTable tbody>tr.selected,table.dataTable tbody>tr>.selected{background-color:#B0BED9}table.dataTable.stripe tbody>tr.odd.selected,table.dataTable.stripe tbody>tr.odd>.selected,table.dataTable.display tbody>tr.odd.selected,table.dataTable.display tbody>tr.odd>.selected{background-color:#acbad4}table.dataTable.hover tbody>tr.selected:hover,table.dataTable.hover tbody>tr>.selected:hover,table.dataTable.display tbody>tr.selected:hover,table.dataTable.display tbody>tr>.selected:hover{background-color:#aab7d1}table.dataTable.order-column tbody>tr.selected>.sorting_1,table.dataTable.order-column tbody>tr.selected>.sorting_2,table.dataTable.order-column tbody>tr.selected>.sorting_3,table.dataTable.order-column tbody>tr>.selected,table.dataTable.display tbody>tr.selected>.sorting_1,table.dataTable.display tbody>tr.selected>.sorting_2,table.dataTable.display tbody>tr.selected>.sorting_3,table.dataTable.display tbody>tr>.selected{background-color:#acbad5}table.dataTable.display tbody>tr.odd.selected>.sorting_1,table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_1{background-color:#a6b4cd}table.dataTable.display tbody>tr.odd.selected>.sorting_2,table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_2{background-color:#a8b5cf}table.dataTable.display tbody>tr.odd.selected>.sorting_3,table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_3{background-color:#a9b7d1}table.dataTable.display tbody>tr.even.selected>.sorting_1,table.dataTable.order-column.stripe tbody>tr.even.selected>.sorting_1{background-color:#acbad5}table.dataTable.display tbody>tr.even.selected>.sorting_2,table.dataTable.order-column.stripe tbody>tr.even.selected>.sorting_2{background-color:#aebcd6}table.dataTable.display tbody>tr.even.selected>.sorting_3,table.dataTable.order-column.stripe tbody>tr.even.selected>.sorting_3{background-color:#afbdd8}table.dataTable.display tbody>tr.odd>.selected,table.dataTable.order-column.stripe tbody>tr.odd>.selected{background-color:#a6b4cd}table.dataTable.display tbody>tr.even>.selected,table.dataTable.order-column.stripe tbody>tr.even>.selected{background-color:#acbad5}table.dataTable.display tbody>tr.selected:hover>.sorting_1,table.dataTable.order-column.hover tbody>tr.selected:hover>.sorting_1{background-color:#a2aec7}table.dataTable.display tbody>tr.selected:hover>.sorting_2,table.dataTable.order-column.hover tbody>tr.selected:hover>.sorting_2{background-color:#a3b0c9}table.dataTable.display tbody>tr.selected:hover>.sorting_3,table.dataTable.order-column.hover tbody>tr.selected:hover>.sorting_3{background-color:#a5b2cb}table.dataTable.display tbody>tr:hover>.selected,table.dataTable.display tbody>tr>.selected:hover,table.dataTable.order-column.hover tbody>tr:hover>.selected,table.dataTable.order-column.hover tbody>tr>.selected:hover{background-color:#a2aec7}table.dataTable tbody td.select-checkbox,table.dataTable tbody th.select-checkbox{position:relative}table.dataTable tbody td.select-checkbox:before,table.dataTable tbody td.select-checkbox:after,table.dataTable tbody th.select-checkbox:before,table.dataTable tbody th.select-checkbox:after{display:block;position:absolute;top:1.2em;left:50%;width:12px;height:12px;box-sizing:border-box}table.dataTable tbody td.select-checkbox:before,table.dataTable tbody th.select-checkbox:before{content:' ';margin-top:-6px;margin-left:-6px;border:1px solid black;border-radius:3px}table.dataTable tr.selected td.select-checkbox:after,table.dataTable tr.selected th.select-checkbox:after{content:'\2714';margin-top:-11px;margin-left:-4px;text-align:center;text-shadow:1px 1px #B0BED9, -1px -1px #B0BED9, 1px -1px #B0BED9, -1px 1px #B0BED9}div.dataTables_wrapper span.select-info,div.dataTables_wrapper span.select-item{margin-left:0.5em}@media screen and (max-width: 640px){div.dataTables_wrapper span.select-info,div.dataTables_wrapper span.select-item{margin-left:0;display:block}}
+    table > thead >tr > th {
+        background-color: #00a968;
+        color: white;
+    }
+    table > tbody tr > th{
+        background-color: #A0A0A0;
+        color: white;
+    }
+    #tb > tbody > tr > td {
+        cursor: pointer;
+    }
     </style>
 </head>
 
@@ -92,7 +103,96 @@
                             </div>
                         </div>
                         <div id="loadTable">
-                            
+                            <div class="body table-responsive">
+                                <table id="tb" class="table table-bordered display dataTable with-check">
+                                    <thead>
+                                        <tr>
+                                        <th><center>วัน-เวลา</th>
+                                            <th><center>08.00-09.50</th>
+                                            <th><center>10.00-11.50</th>
+                                            <th><center>12.00-13.00</th>
+                                            <th><center>13.00-14.50</th>
+                                            <th><center>15.00-16.50</th>
+                                            <th><center>17.00-18.50</th>
+                                            <th><center>19.00-20.50</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-day="1">
+                                            <th>จันทร์</th>
+                                            <td data-start="08.00" data-end="09.50"></td>
+                                            <td data-start="10.00" data-end="11.50"></td>
+                                            <td data-start="12.00" data-end="13.00"></td>
+                                            <td data-start="13.00" data-end="14.50"></td>
+                                            <td data-start="15.00" data-end="16.50"></td>
+                                            <td data-start="17.00" data-end="18.50"></td>
+                                            <td data-start="19.00" data-end="20.50"></td>
+                                        </tr>
+                                        <tr data-day="2">
+                                            <th>อังคาร</th>
+                                            <td data-start="08.00" data-end="09.50"></td>
+                                            <td data-start="10.00" data-end="11.50"></td>
+                                            <td data-start="12.00" data-end="13.00"></td>
+                                            <td data-start="13.00" data-end="14.50"></td>
+                                            <td data-start="15.00" data-end="16.50"></td>
+                                            <td data-start="17.00" data-end="18.50"></td>
+                                            <td data-start="19.00" data-end="20.50"></td>
+                                        </tr>
+                                        <tr data-day="3">
+                                            <th>พุธ</th>
+                                            <td data-start="08.00" data-end="09.50"></td>
+                                            <td data-start="10.00" data-end="11.50"></td>
+                                            <td data-start="12.00" data-end="13.00"></td>
+                                            <td data-start="13.00" data-end="14.50"></td>
+                                            <td data-start="15.00" data-end="16.50"></td>
+                                            <td data-start="17.00" data-end="18.50"></td>
+                                            <td data-start="19.00" data-end="20.50"></td>
+                                        </tr>
+                                        <tr data-day="4">
+                                            <th>พฤหัสบดี</th>
+                                            <td data-start="08.00" data-end="09.50"></td>
+                                            <td data-start="10.00" data-end="11.50"></td>
+                                            <td data-start="12.00" data-end="13.00"></td>
+                                            <td data-start="13.00" data-end="14.50"></td>
+                                            <td data-start="15.00" data-end="16.50"></td>
+                                            <td data-start="17.00" data-end="18.50"></td>
+                                            <td data-start="19.00" data-end="20.50"></td>
+                                        </tr>
+                                        <tr data-day="5">
+                                            <th>ศุกร์</th>
+                                            <td data-start="08.00" data-end="09.50"></td>
+                                            <td data-start="10.00" data-end="11.50"></td>
+                                            <td data-start="12.00" data-end="13.00"></td>
+                                            <td data-start="13.00" data-end="14.50"></td>
+                                            <td data-start="15.00" data-end="16.50"></td>
+                                            <td data-start="17.00" data-end="18.50"></td>
+                                            <td data-start="19.00" data-end="20.50"></td>
+                                        </tr>
+                                        <tr data-day="6">
+                                            <th>เสาร์</th>
+                                            <td data-start="08.00" data-end="09.50"></td>
+                                            <td data-start="10.00" data-end="11.50"></td>
+                                            <td data-start="12.00" data-end="13.00"></td>
+                                            <td data-start="13.00" data-end="14.50"></td>
+                                            <td data-start="15.00" data-end="16.50"></td>
+                                            <td data-start="17.00" data-end="18.50"></td>
+                                            <td data-start="19.00" data-end="20.50"></td>
+                                        </tr>
+                                        <tr data-day="0">
+                                            <th>อาทิตย์</th>
+                                            <td data-start="08.00" data-end="09.50"></td>
+                                            <td data-start="10.00" data-end="11.50"></td>
+                                            <td data-start="12.00" data-end="13.00"></td>
+                                            <td data-start="13.00" data-end="14.50"></td>
+                                            <td data-start="15.00" data-end="16.50"></td>
+                                            <td data-start="17.00" data-end="18.50"></td>
+                                            <td data-start="19.00" data-end="20.50"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <center><button type="button" class="btn btn-success m-t-15 waves-effect">ยืนยัน</button>
+                                <button type="reset" class="btn btn-danger m-t-15 waves-effect">ยกเลิก</button></center>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,7 +224,48 @@
         }
 
         $(function(){
-            var loadSection = function(){
+            var time = {
+                1:{}, 
+                2:{},
+                3:{},
+                4:{},
+                5:{},
+                6:{},
+                0:{}
+            },
+            mapDayWeek = {'MO': 1, 'TU': 2, 'WE': 3, 'TH': 4, 'FR': 5, 'SA': 6, 'SU': 0}
+            
+            var resetTime = function(learn = true, student = true){
+                if(learn && student){
+                    for(var day in time){
+                        time[day] = {
+                            '08.00-09.50': { Section_id: 0, isLearn: false, studentIsFree: false, register: {} }, 
+                            '10.00-11.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
+                            '12.00-13.00': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
+                            '13.00-14.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
+                            '15.00-16.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
+                            '17.00-18.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
+                            '19.00-20.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }
+                        }
+                    }
+                }
+                else if (learn){
+                    for(var day in time){
+                        for(var t in time[day]){
+                            time[day][t].isLearn = false
+                            time[day][t].Section_id = 0
+                        }
+                    }
+                }
+                else if (student){
+                    for(var day in time){
+                        for(var t in time[day]){
+                            time[day][t].studentIsFree = false
+                        }
+                    }
+                }
+            }
+            var loadFreeTime = function(){
                 var student  = $('#student').val(),
                     subject = $('#subject').val()
                 if(student && subject){
@@ -133,17 +274,117 @@
                         Student_id: student
                     }
                     $.post('table/loadFreeTime', {data: data}, function(res){
-                        res = JSON.parse(res);
-                        console.log(res);
+                        res = JSON.parse(res)
+                        for(var i in res){
+                            res[i].Start = convertime(res[i].Start)
+                            res[i].End = convertime(res[i].End)
+                            var time_str = res[i].Start + '-' + res[i].End
+                            if(time[res[i].DayofWeek][time_str]){
+                                time[res[i].DayofWeek][time_str].studentIsFree = true
+                            }
+                        }
+                        draw()
                     })
+                }
+                else{
+                    draw()
+                }
+            },
+            loadSection = function(){
+                var data = {
+                    Subject_id: $('#subject').val(),
+                    Room_id: $('#room').val()
+                }
+                $.post('table/loadSection', {data: data}, function(res){
+                    res = JSON.parse(res)
+                    for(var i in res){
+                        res[i].Section_start_time = convertime(res[i].Section_start_time)
+                        res[i].Section_end_time = convertime(res[i].Section_end_time)
+                        var time_str = res[i].Section_start_time + '-' + res[i].Section_end_time
+                        time[mapDayWeek[res[i].Section_day]][time_str].isLearn = true
+                        time[mapDayWeek[res[i].Section_day]][time_str].Section_id = res[i].Section_id
+                    }
+                    loadFreeTime()
+                })
+            },
+            convertime = function(fromtime){
+                var rs = fromtime
+                if(fromtime.indexOf(':') != -1) {
+                    // 09:00 -> 09.00
+                    rs = fromtime.replace(':','.')
+                }
+                else {
+                    // 9.00 -> 09.00
+                    var time_r = fromtime.split('.')
+                    var tmp = '0' + time_r[0]
+                    rs = tmp.substr(tmp.length - 2) + '.' + time_r[1]
+                }
+                return rs
+            },
+            draw = function(){
+                var student = $('#student').val()
+                for(var day in  time){
+                    for(var t in time[day]){
+                        var t_r = t.split('-')
+                        if(time[day][t]){
+                            var td = $('tr[data-day='+day+']').find('td[data-start="'+t_r[0]+'"][data-end="'+t_r[1]+'"]'),
+                                data = time[day][t]
+                            var text_r = [], i = 0
+                            for(var stu in data.register){
+                                i++
+                                if(i % 2 == 1){
+                                    text_r.push(data.register[stu].Room_name + ' ' + stu + '<br>')
+                                }else{
+                                    text_r.push(data.register[stu].Room_name + ' ' + stu)
+                                }
+                            }
+                            td.html(text_r.join(''))
+                            td.css('background-color', '')
+                            if(data.isLearn && data.studentIsFree && data.register[student]){
+                                // ฟ้า
+                                td.css('background-color', '#99d4ff')
+                            }
+                            else if(data.isLearn && data.studentIsFree){
+                                // เทา
+                                td.css('background-color', '#cacaca')
+                            }
+                            else if(data.isLearn){
+                                // แดง
+                                td.css('background-color', '#ff7878')
+                            }
+                        }
+                    }
                 }
             }
 
+            resetTime()
+
+            $('#tb').on('click', 'tbody > tr > td', function(){
+                var day = $(this).parents('tr').data('day')
+                var t = $(this).data('start') + '-' + $(this).data('end'),
+                    student = $('#student').val()
+                if(time[day][t] && time[day][t].studentIsFree){
+                    if(!time[day][t].register[student]){
+                        time[day][t].register[student] = { 
+                            subject: $('#subject').val(), 
+                            Room_id: $('#room').val(),
+                            Room_name: $('#room option:selected').text()
+                        }
+                    }
+                    else{
+                        delete time[day][t].register[student]
+                    }
+                    draw()
+                }
+            })
+
             $('#student').change(function(){
-                loadSection()
+                resetTime(learn = false)
+                loadFreeTime()
             })
 
             $('#subject').change(function(){
+                resetTime(student = false)
                 var data = {
                     id: $(this).val()
                 }
@@ -170,15 +411,8 @@
             })
 
             $('#room').change(function(){
-                var data = {
-                    Subject_id: $('#subject').val(),
-                    Room_id: $('#room').val()
-                }
-                $.post('table/loadSection', {data: data}, function(res){
-                    res = JSON.parse(res)
-                    console.log(res);
-                    loadSection()
-                })
+                resetTime()
+                loadSection()
             })
         })
     </script>
