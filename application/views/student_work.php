@@ -186,8 +186,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <center><button name="btnsave" type="button" class="btn btn-success m-t-15 waves-effect">ยืนยัน</button>
-                                <button type="reset" class="btn btn-danger m-t-15 waves-effect">ยกเลิก</button></center>
                             </div>
                         </div>
                     </div>
@@ -421,35 +419,6 @@
                         })
                     }
                 }
-            })
-
-            $(window).keypress(function(event) {
-                if (!(event.which == 115 && event.ctrlKey) && !(event.which == 19)) return true;
-                $('button[name=btnsave]').trigger('click')
-                event.preventDefault();
-                return false;
-            })
-
-            $('button[name=btnsave]').click(function(){
-                var data = {
-                    Subject_id: $('#subject').val()
-                }
-                swal({
-                    title: "Are you sure?",
-                    text: "ต้องการยืนยัน",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#1f91f3",
-                    confirmButtonText: "ใช่!",
-                    confirmButtonColor: "#1f91f3",
-                    cancelButtonText: "ยกเลิก!",                    
-                    closeOnConfirm: false,
-                    showLoaderOnConfirm: true
-                }, function () {
-                    $.post("table/saveTmptoWork", { data: data }, function(data){
-                        swal("บันทึกสำเร็จ!", "รายละเอียดถูกบันทึกเรียบร้อย", "success")             
-                    })
-                });
             })
 
             $('#student').change(function(){
