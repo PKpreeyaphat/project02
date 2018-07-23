@@ -70,7 +70,7 @@
                                     <h2>ตารางการทำงาน TA</h2>
                                 </div>
 
-                                <div class="col-md-4">
+                                <div class="col-md-8">
                                     <p>
                                         <b>เลือกรายวิชา :</b>
                                     </p>
@@ -80,15 +80,6 @@
                                         <option value="<?=$x->Subject_id?>"><?=$x->Subject_id.' '.$x->Subject_name?></option>
                                     <?php } ?>
                                     ?>
-                                    </select>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <p>
-                                        <b>เลือกห้อง :</b>
-                                    </p>
-                                    <select class="form-control show-tick" id="room">
-                                    <option>———กรุณาเลือก———</option>
                                     </select>
 
                                 </div>
@@ -312,8 +303,7 @@
             },
             loadSection = function(){
                 var data = {
-                    Subject_id: $('#subject').val(),
-                    Room_id: $('#room').val()
+                    Subject_id: $('#subject').val()
                 }
                 $.post('table/loadSection', {data: data}, function(res){
                     res = JSON.parse(res)
@@ -428,18 +418,8 @@
 
             $('#subject').change(function(){
                 resetTime(student = false)
-                var data = {
-                    id: $(this).val()
-                }
-                $.post('table/loadRoom', {data: data}, function(res){
-                    res = JSON.parse(res)
-                    var html = '<option value="All">ทั้งหมด</option>'
-                    for(var i in res){
-                        html += '<option value="'+res[i].Room_id+'">'+res[i].Room_name+'</option>'
-                    }
-                    $('#room').html(html)
-                    $('#room').trigger('change')
-                })
+                resetTime()
+                loadSection()
             })
 
             $('#room').change(function(){
