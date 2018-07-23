@@ -249,13 +249,13 @@
                 if(learn && student){
                     for(var day in time){
                         time[day] = {
-                            '08.00-09.50': { Section_id: 0, isLearn: false, studentIsFree: false, register: {} }, 
-                            '10.00-11.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
-                            '12.00-13.00': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
-                            '13.00-14.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
-                            '15.00-16.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
-                            '17.00-18.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
-                            '19.00-20.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }
+                            '08.00-09.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '10.00-11.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '12.00-13.00': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '13.00-14.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '15.00-16.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '17.00-18.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '19.00-20.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }
                         }
                     }
                 }
@@ -263,7 +263,7 @@
                     for(var day in time){
                         for(var t in time[day]){
                             time[day][t].isLearn = false
-                            time[day][t].Section_id = 0
+                            time[day][t].Room = {}
                         }
                     }
                 }
@@ -314,6 +314,7 @@
                         var sh_time = time[mapDayWeek[res[i].Section_day]][time_str]
                         if(!sh_time.register[res[i].Student_id]){
                             sh_time.register[res[i].Student_id] = { 
+                                Section_id: res[i].Section_id,
                                 subject: res[i].Subject_id,
                                 Room_id: res[i].Room_id,
                                 Room_name: res[i].Room_name
@@ -331,12 +332,14 @@
                 $.post('table/loadSection', {data: data}, function(res){
                     res = JSON.parse(res)
                     console.log(res);
+                    console.log(1);
                     for(var i in res){
                         res[i].Section_start_time = convertime(res[i].Section_start_time)
                         res[i].Section_end_time = convertime(res[i].Section_end_time)
                         var time_str = res[i].Section_start_time + '-' + res[i].Section_end_time
                         time[mapDayWeek[res[i].Section_day]][time_str].isLearn = true
-                        time[mapDayWeek[res[i].Section_day]][time_str].Section_id = res[i].Section_id
+                        time[mapDayWeek[res[i].Section_day]][time_str].Room[res[i].Room_id] = 
+                            { Section_id: res[i].Section_id }
                     }
                     loadWork_tmp()
                 })
@@ -400,19 +403,20 @@
                 if(time[day][t] && time[day][t].studentIsFree){
                     var data = {
                         Student_id: student,
-                        Section_id: time[day][t].Section_id,
+                        Section_id: time[day][t].Room[$('#room').val()].Section_id,
                         Subject_id: $('#subject').val(),
                         Room_id: $('#room').val(),
                         Room_name: $('#room option:selected').text()
                     }, json = {
                         Student_id: student,
-                        Section_id: time[day][t].Section_id,
+                        Section_id: time[day][t].Room[$('#room').val()].Section_id,
                     }
                     $('button[name=btnsave]').prop('disabled', true)
                     if(!time[day][t].register[student]){
                         // add
                         $.post('table/saveStudentWork_tmp', {data: json}, function(res){
                             time[day][t].register[student] = { 
+                                Section_id: data.Section_id,
                                 subject: data.Subject_id,
                                 Room_id: data.Room_id,
                                 Room_name: data.Room_name
@@ -423,6 +427,8 @@
                     }
                     else{
                         // remove
+                        data.Section_id = time[day][t].register[student].Section_id
+                        console.log(data);
                         $.post('table/removeStudentWork_tmp', {data: data}, function(res){
                             delete time[day][t].register[student]
                             draw()

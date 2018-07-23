@@ -69,7 +69,7 @@
                                 <div class="col-lg-12 m-b-20">
                                     <h2>ตารางการทำงาน TA</h2>
                                 </div>
-                                
+
                                 <div class="col-md-4">
                                     <p>
                                         <b>เลือกรายวิชา :</b>
@@ -464,23 +464,12 @@
                 }
                 $.post('table/loadRoom', {data: data}, function(res){
                     res = JSON.parse(res)
-                    var html = ''
+                    var html = '<option value="All">ทั้งหมด</option>'
                     for(var i in res){
                         html += '<option value="'+res[i].Room_id+'">'+res[i].Room_name+'</option>'
                     }
                     $('#room').html(html)
-                    data = {
-                        Subject_id: $('#subject').val()
-                    }
-                    $.post('table/loadStudent', {data: data}, function(res){
-                        res = JSON.parse(res)
-                        var html = ''
-                        for(var i in res){
-                            html += '<option value="'+res[i].Student_id+'">'+res[i].Student_firstname+' '+res[i].Student_lastname+'</option>'
-                        }
-                        $('#student').html(html)
-                        $('#room').trigger('change')
-                    })
+                    $('#room').trigger('change')
                 })
             })
 
