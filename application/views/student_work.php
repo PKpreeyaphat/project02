@@ -72,7 +72,7 @@
                                 <div class="col-lg-6 align-right">
                                     <button type="button" class="btn btn-primary waves-effect m-r-20">จัดตาราง</button>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <p>
                                         <b>เลือกรายวิชา :</b>
                                     </p>
@@ -91,15 +91,6 @@
                                     </p>
                                     <select class="form-control show-tick" id="room">
                                     <option>———กรุณาเลือก———</option>
-                                    </select>
-
-                                </div>
-                                <div class="col-md-3">
-                                    <p>
-                                        <b>เลือกผู้รับผิดชอบ :</b>
-                                    </p>
-                                    <select class="form-control show-tick" id="student">
-                                    <option value=''>———กรุณาเลือก———</option>
                                     </select>
 
                                 </div>
@@ -300,11 +291,11 @@
                     draw()
                 }
             },
-            loadWork_tmp = function(){
+            loadWork = function(){
                 var data = {
                     Subject_id: $('#subject').val()
                 }
-                $.post('table/loadStudentWork_tmp', {data: data}, function(res){
+                $.post('table/loadStudentWork', {data: data}, function(res){
                     res = JSON.parse(res)
                     console.log(res);
                     for(var i in res){
@@ -312,8 +303,8 @@
                         res[i].Section_end_time = convertime(res[i].Section_end_time)
                         var time_str = res[i].Section_start_time + '-' + res[i].Section_end_time
                         var sh_time = time[mapDayWeek[res[i].Section_day]][time_str]
-                        if(!sh_time.register[res[i].Student_id]){
-                            sh_time.register[res[i].Student_id] = { 
+                        if(!sh_time.register[res[i].sw_Student_id]){
+                            sh_time.register[res[i].sw_Student_id] = { 
                                 subject: res[i].Subject_id,
                                 Room_id: res[i].Room_id,
                                 Room_name: res[i].Room_name
@@ -338,7 +329,7 @@
                         time[mapDayWeek[res[i].Section_day]][time_str].isLearn = true
                         time[mapDayWeek[res[i].Section_day]][time_str].Section_id = res[i].Section_id
                     }
-                    loadWork_tmp()
+                    loadWork()
                 })
             },
             convertime = function(fromtime){
@@ -376,15 +367,15 @@
                             td.css('background-color', '')
                             if(data.isLearn && data.studentIsFree && data.register[student]){
                                 // ฟ้า
-                                td.css('background-color', '#99d4ff')
+                                td.css('background-color', '#C0D0FF')
                             }
                             else if(data.isLearn && data.studentIsFree){
                                 // เทา
-                                td.css('background-color', '#cacaca')
+                                td.css('background-color', '#C0D0FF')
                             }
                             else if(data.isLearn){
                                 // แดง
-                                td.css('background-color', '#ff7878')
+                                td.css('background-color', '#C0D0FF')
                             }
                         }
                     }
@@ -392,6 +383,10 @@
             }
 
             resetTime()
+
+            $('button[name=btnfresh]').click(function(){
+                $('#room').trigger('change')
+            })
 
             $('#tb').on('click', 'tbody > tr > td', function(){
                 var day = $(this).parents('tr').data('day')
@@ -408,7 +403,7 @@
                         Student_id: student,
                         Section_id: time[day][t].Section_id,
                     }
-                    $('button[name=btnsave]').prop('disabled', true)
+                    
                     if(!time[day][t].register[student]){
                         // add
                         $.post('table/saveStudentWork_tmp', {data: json}, function(res){
@@ -418,7 +413,6 @@
                                 Room_name: data.Room_name
                             }
                             draw()
-                            $('button[name=btnsave]').prop('disabled', false)
                         })
                     }
                     else{
@@ -426,14 +420,9 @@
                         $.post('table/removeStudentWork_tmp', {data: data}, function(res){
                             delete time[day][t].register[student]
                             draw()
-                            $('button[name=btnsave]').prop('disabled', false)
                         })
                     }
                 }
-            })
-
-            $('button[name=btnfresh]').click(function(){
-                $('#room').trigger('change')
             })
 
             $(window).keypress(function(event) {
@@ -444,8 +433,6 @@
             })
 
             $('button[name=btnsave]').click(function(){
-                if($('button[name=btnsave]').prop('disabled'))
-                    return
                 var data = {
                     Subject_id: $('#subject').val()
                 }

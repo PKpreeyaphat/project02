@@ -105,6 +105,12 @@
         </ul> -->
         </li>
         <li>
+            <a href="<?php echo base_url(); ?>index.php/StudentWork">
+                <i class="material-icons">work</i>
+                <span>ตารางการทำงาน</span>
+            </a>
+        </li>
+        <li>
             <a href="javascript:void(0);" class="menu-toggle">
             <!-- <a href="index.php/page5" class="menu-toggle"> -->
                 <i class="material-icons">swap_calls</i>

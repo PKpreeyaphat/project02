@@ -15,6 +15,43 @@ class Table extends CI_Controller {
         
 	}
 
+	public function saveTmptoWork()
+	{
+		$this->load->model('StudentWork_Model');
+		$data = $this->input->post('data');
+		$this->StudentWork_Model->tmp2Work($data);
+	}
+
+	public function loadStudentWork_tmp()
+	{
+		$this->load->model('StudentWork_Model');
+		$data = $this->input->post('data');
+		$rs = $this->StudentWork_Model->getWork_tmp($data);
+		echo json_encode($rs);
+	}
+
+	public function loadStudentWork()
+	{
+		$this->load->model('StudentWork_Model');
+		$data = $this->input->post('data');
+		$rs = $this->StudentWork_Model->getWork($data);
+		echo json_encode($rs);
+	}
+
+	public function saveStudentWork_tmp()
+	{
+		$this->load->model('StudentWork_Model');
+		$data = $this->input->post('data');
+		$this->StudentWork_Model->save_tmp($data);
+	}
+
+	public function removeStudentWork_tmp()
+	{
+		$this->load->model('StudentWork_Model');
+		$data = $this->input->post('data');
+		$this->StudentWork_Model->delete_tmp($data);
+	}
+
 	public function loadSection()
 	{
 		$this->load->model('Section_Model');
