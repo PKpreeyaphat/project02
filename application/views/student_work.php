@@ -65,13 +65,11 @@
                     <div class="card">
                         <div class="header">
                             <div class="row clearfix">
-                                <div class="col-lg-6">
-                                    <h2>จัดตารางการทำงาน TA</h2>
+                                
+                                <div class="col-lg-12 m-b-20">
+                                    <h2>ตารางการทำงาน TA</h2>
                                 </div>
-
-                                <div class="col-lg-6 align-right">
-                                    <button type="button" class="btn btn-primary waves-effect m-r-20">จัดตาราง</button>
-                                </div>
+                                
                                 <div class="col-md-4">
                                     <p>
                                         <b>เลือกรายวิชา :</b>
