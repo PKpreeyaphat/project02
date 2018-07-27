@@ -12,7 +12,8 @@ class Student_Model extends CI_Model
 
     public function getStudentByID($id)
     {
-        $this->db->where('Student_id', $id);
+        $this->db->join('RegisterSubject', 'RegisterSubject.Student_id = Student.Student_id', 'left');
+        $this->db->where('Student.Student_id', $id);
         $res = $this->db->get('Student');
         return $res->result(); 
     }

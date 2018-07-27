@@ -67,7 +67,7 @@
                                 </div>
                                 <div>
                                     <label>เกรด</label>
-                                    <label style="display: block; padding: 6px 12px;"><?=(isset($student))? $student->Student_grade : ''?></label>
+                                    <label style="display: block; padding: 6px 12px;"><?=(isset($student))? $student->Grade : ''?></label>
                                 </div>
                                 <!-- <div class="form-group">
                                     <div class="form-line">

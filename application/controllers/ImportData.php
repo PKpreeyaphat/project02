@@ -5,12 +5,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class ImportData extends CI_Controller
 {
 
-    public function index()
+    public function index($id)
     {
         $this->load->model('Import_Model');
-        $data['section'] = $this->Import_Model->getAllSection();
+        $data['section'] = $this->Import_Model->getAllSection($id);
         $this->load->view('import_data', $data);
+    }
 
+    public function getSectionInfo($id)
+    {
+        $this->load->model('Import_Model');
+        echo json_encode($this->Import_Model->getSection($id));
     }
 
     public function uploadFile()
@@ -42,6 +47,7 @@ class ImportData extends CI_Controller
             $this->load->model('Import_Model');
             $this->load->model('Page2_Model');
             $this->load->model('Room_Model');
+            $this->load->model('Semester_Model');
 
             if (sizeof($this->Room_Model->getAllRoom()) == 0){
                 echo '<script>alert("กรุณานำเข้าห้องปฏิบัติการก่อน!!");</script>';
@@ -89,15 +95,26 @@ class ImportData extends CI_Controller
                 $secondStartTime = trim(substr($secondTime, 0, $pivotMinus));
                 $secondEndTime = trim(substr($secondTime, $pivotMinus + 1));
 
+                $pivotComma = strpos($row["Teacher"], ",", 0);
+                if($pivotComma === false){
+                    $teacher = trim($row["Teacher"]);
+                } else {
+                    $teacher = trim(substr($row["Teacher"], $pivotComma + 1));
+                }
+
+                
+
                 if (sizeof($room = $this->Room_Model->getRoomByName($firstRoom)) > 0) {
                     $data = array(
                         'Subject_id' => $row["ID"],
                         'Section_id' => $row["Section"],
+                        'Semester_ID' => $this->Semester_Model->Last()[0]->Semester_ID,
                         'Section_name' => substr($row["Subject"], 45),
                         'Section_student_quantity' => $row["Student"],
                         'Section_day' => $firstDay,
                         'Section_start_time' => $firstStartTime,
                         'Section_end_time' => $firstEndTime,
+                        'Teacher_fullname' => $teacher,
                         'Room_id' => $room[0]->Room_id
                     );
 
@@ -108,11 +125,13 @@ class ImportData extends CI_Controller
                     $data = array(
                         'Subject_id' => $row["ID"],
                         'Section_id' => $row["Section"],
+                        'Semester_ID' => $this->Semester_Model->Last()[0]->Semester_ID,
                         'Section_name' => substr($row["Subject"], 45),
                         'Section_student_quantity' => $row["Student"],
                         'Section_day' => $secondDay,
                         'Section_start_time' => $secondStartTime,
                         'Section_end_time' => $secondEndTime,
+                        'Teacher_fullname' => $teacher,
                         'Room_id' => $room[0]->Room_id
                     );
 
@@ -120,7 +139,7 @@ class ImportData extends CI_Controller
                 }
             }
 
-            redirect('ImportData','refresh');
+            redirect('ImportData/index/'.$row["ID"],'refresh');
         }
 
     }

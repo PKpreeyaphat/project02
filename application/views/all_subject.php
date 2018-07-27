@@ -61,7 +61,7 @@
                             <div class="row clearfix">
                                 <div class="col-lg-6">
                                     <?php foreach ($subject as $x) { ?>
-                                        <a href="<?php echo base_url(); ?>index.php/ImportData"><button type="button" class="btn bg-indigo btn-lg btn-block waves-effect"><?php echo $x->Subject_id." ".$x->Subject_name?></button></a>
+                                        <a href="<?php echo base_url(); ?>index.php/ImportData/index/<?php echo $x->Subject_id ?>"><button type="button" class="btn bg-indigo btn-lg btn-block waves-effect"><?php echo $x->Subject_id." ".$x->Subject_name?></button></a>
                                     <?php } ?>
                                 </div>
                             </div>
