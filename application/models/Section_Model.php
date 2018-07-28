@@ -7,9 +7,7 @@ class Section_Model extends CI_Model {
 
     public function insertSection($data)
     {
-
-      $this->db->insert('Section', $data);
-
+      return $this->db->insert('Section', $data);
     }
 
     public function getTime($data)

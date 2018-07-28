@@ -73,11 +73,16 @@
 								<div class="col-lg-6">
 									<div class="form-group">
 										<div class="form-line">
-											<select class="form-control show-tick" name="">
-												<option value="#">ปีการศึกษา</option>
-												<option value="1">1</option>
-												<option value="2">2</option>
-												<option value="3">ฤดูร้อน</option>
+											<select class="form-control show-tick" name="Semester_ID">
+												<option disabled>ปีการศึกษา</option>
+												<?php foreach ($semester as $x) {
+													if($Semester_ID == $x->Semester_ID){
+														echo '<option selected value="'.$x->Semester_ID.'">ปี '.$x->Semester_Year.' ภาค '. $x->Semester_Name.'</option>';
+													}
+													else{
+														echo '<option value="'.$x->Semester_ID.'">ปี '.$x->Semester_Year.' ภาค '. $x->Semester_Name.'</option>';
+													}
+												} ?> 
 											</select>
 										</div>
 									</div>
@@ -214,6 +219,10 @@
 				}
 				});
 			});
+
+			$('select[name=Semester_ID]').change(function(){
+				window.location.href =   "<?php echo base_url() ?>index.php/ImportData/index/<?=$Subject_id?>/" + $(this).val()
+			})
 
 		});
 

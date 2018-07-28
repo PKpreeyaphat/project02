@@ -4,11 +4,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class ImportData extends CI_Controller
 {
-
-    public function index($id)
+    public function index($id, $semester_id = null)
     {
         $this->load->model('Import_Model');
-        $data['section'] = $this->Import_Model->getAllSection($id);
+        $this->load->model('Semester_Model');
+        $this->load->model('CurrentSemester_Model');
+        if(!isset($semester_id) || $semester_id == null){
+            $semester_id = $this->CurrentSemester_Model->getSemester_ID();
+        }
+        $data['Subject_id'] = $id;
+        $data['Semester_ID'] = $semester_id;
+        $data['section'] = $this->Import_Model->getAllSectionBySemester($id, $semester_id);
+        $data['semester'] = $this->Semester_Model->getAllSemester();
         $this->load->view('import_data', $data);
     }
 
