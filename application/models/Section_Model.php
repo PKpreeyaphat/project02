@@ -51,10 +51,10 @@ class Section_Model extends CI_Model {
 
     public function getRoom($id)
     {
-        $this->db->select('Section.Room_id, Room.Room_name');
+        $this->db->select('Section.Room_id, Room.Room_name, Room.Room_qty');
         $this->db->join('Room', 'Room.Room_id = Section.Room_id');
         $this->db->where('Section.Subject_id', $id);
-        $this->db->group_by('Section.Room_id'); 
+        $this->db->group_by('Section.Room_id,Room.Room_qty'); 
         $this->db->order_by('Section.Room_id'); 
         $res = $this->db->get('Section');
         return $res->result();

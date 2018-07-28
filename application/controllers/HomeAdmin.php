@@ -28,6 +28,17 @@ class HomeAdmin extends CI_Controller {
         redirect('HomeAdmin','refresh');
     }
 
+    public function updateStatus_r()
+    {
+        $data_r = $this->input->post('data');
+        for($i = 0; $i < count($data_r); $i++){
+            $studentID = $data_r[$i]['Student_id'];
+            $data = array('status' => $data_r[$i]['status']);
+            $this->load->model('AllSubject_Model');
+            $students = $this->AllSubject_Model->updateStatus($studentID, $data);
+        }
+    }
+
     public function logout()
     {
         $this->session->sess_destroy();

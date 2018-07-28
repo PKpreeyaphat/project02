@@ -306,7 +306,6 @@
                 }
                 $.post('table/loadStudentWork_tmp', {data: data}, function(res){
                     res = JSON.parse(res)
-                    console.log(res);
                     for(var i in res){
                         res[i].Section_start_time = convertime(res[i].Section_start_time)
                         res[i].Section_end_time = convertime(res[i].Section_end_time)
@@ -331,8 +330,6 @@
                 }
                 $.post('table/loadSection', {data: data}, function(res){
                     res = JSON.parse(res)
-                    console.log(res);
-                    console.log(1);
                     for(var i in res){
                         res[i].Section_start_time = convertime(res[i].Section_start_time)
                         res[i].Section_end_time = convertime(res[i].Section_end_time)
@@ -360,19 +357,23 @@
             },
             draw = function(){
                 var student = $('#student').val()
+                var sel_room = $('#room').val()
                 for(var day in  time){
                     for(var t in time[day]){
                         var t_r = t.split('-')
                         if(time[day][t]){
                             var td = $('tr[data-day='+day+']').find('td[data-start="'+t_r[0]+'"][data-end="'+t_r[1]+'"]'),
                                 data = time[day][t]
-                            var text_r = [], i = 0
+                            var text_r = [], i = 0, isBusy = false
                             for(var stu in data.register){
-                                i++
-                                if(i % 2 == 1){
-                                    text_r.push(data.register[stu].Room_name + ' ' + stu + '<br>')
-                                }else{
-                                    text_r.push(data.register[stu].Room_name + ' ' + stu)
+                                if(true || sel_room == data.register[stu].Room_name){
+                                    var html_stu = (stu == student)?  '<span style="color: blue;">'+stu + '</span>' : stu
+                                    i++
+                                    if(i % 2 == 1){
+                                        text_r.push(data.register[stu].Room_name + ' ' + html_stu + '<br>')
+                                    }else{
+                                        text_r.push(data.register[stu].Room_name + ' ' + html_stu)
+                                    }
                                 }
                             }
                             td.html(text_r.join(''))
@@ -428,7 +429,6 @@
                     else{
                         // remove
                         data.Section_id = time[day][t].register[student].Section_id
-                        console.log(data);
                         $.post('table/removeStudentWork_tmp', {data: data}, function(res){
                             delete time[day][t].register[student]
                             draw()
@@ -485,9 +485,10 @@
                 }
                 $.post('table/loadRoom', {data: data}, function(res){
                     res = JSON.parse(res)
+                    console.log(res);
                     var html = ''
                     for(var i in res){
-                        html += '<option value="'+res[i].Room_id+'">'+res[i].Room_name+'</option>'
+                        html += '<option value="'+res[i].Room_id+'">'+res[i].Room_name+' '+res[i].Room_qty+'</option>'
                     }
                     $('#room').html(html)
                     data = {
