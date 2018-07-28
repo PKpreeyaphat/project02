@@ -15,6 +15,7 @@ class Section_Model extends CI_Model {
     public function getTime($data)
     {
         $this->db->where('Section.Subject_id', $data['Subject_id']);
+        $this->db->where('Section.Semester_ID', $data['Semester_ID']);
         if(isset($data['Room_id']) && $data['Room_id'] != 'All'){
             $this->db->where('Section.Room_id', $data['Room_id']);
         }

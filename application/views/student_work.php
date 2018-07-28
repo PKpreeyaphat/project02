@@ -70,7 +70,7 @@
                                     <h2>ตารางการทำงาน TA</h2>
                                 </div>
 
-                                <div class="col-md-8">
+                                <div class="col-md-5">
                                     <p>
                                         <b>เลือกรายวิชา :</b>
                                     </p>
@@ -83,7 +83,11 @@
                                     </select>
 
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-1">
+                                    <p></p>
+                                    <button name="btnreport" class="btn btn-sm btn-default m-t-20 waves-effect">Report</button>
+                                </div>
+                                <div class="col-md-1">
                                     <p></p>
                                     <button name="btnfresh" class="btn btn-sm btn-default m-t-20 waves-effect"><i class="material-icons">refresh</i></button>
                                 </div>
@@ -177,6 +181,19 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <table id="tb_report" style="display: none;">
+                                    <thead>
+                                        <tr>
+                                            <th>รหัสนิสิต</th>
+                                            <th>ชื่อ</th>
+                                            <th>วิชา</th>
+                                            <th>ห้อง</th>
+                                            <th>เวลา</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_report">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -204,12 +221,27 @@
     <!-- Sweet Alert Plugin Js -->
     <script src="<?php echo base_url() ?>/plugins/sweetalert/sweetalert.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+
     <script type="text/javascript">
         function loadTable(){
             $.post('table/loadTable',{Room_id:""+$('select#room').val()+""},function(res){
                 $('div#loadTable').html(res);
             });
         }
+
+        var tableToExcel = (function() {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+                , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+                , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+            return function(table, name) {
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+                window.location.href = uri + base64(format(template, ctx))
+            }
+        })()
 
         $(function(){
             var time = {
@@ -227,13 +259,13 @@
                 if(learn && student){
                     for(var day in time){
                         time[day] = {
-                            '08.00-09.50': { Section_id: 0, isLearn: false, studentIsFree: false, register: {} }, 
-                            '10.00-11.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
-                            '12.00-13.00': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
-                            '13.00-14.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
-                            '15.00-16.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
-                            '17.00-18.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }, 
-                            '19.00-20.50': { Section_id: 0,isLearn: false, studentIsFree: false, register: {} }
+                            '08.00-09.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '10.00-11.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '12.00-13.00': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '13.00-14.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '15.00-16.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '17.00-18.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }, 
+                            '19.00-20.50': { Room: {}, isLearn: false, studentIsFree: false, register: {} }
                         }
                     }
                 }
@@ -241,7 +273,7 @@
                     for(var day in time){
                         for(var t in time[day]){
                             time[day][t].isLearn = false
-                            time[day][t].Section_id = 0
+                            time[day][t].Room = {}
                         }
                     }
                 }
@@ -291,7 +323,8 @@
                         var time_str = res[i].Section_start_time + '-' + res[i].Section_end_time
                         var sh_time = time[mapDayWeek[res[i].Section_day]][time_str]
                         if(!sh_time.register[res[i].sw_Student_id]){
-                            sh_time.register[res[i].sw_Student_id] = { 
+                            sh_time.register[res[i].sw_Student_id] = {
+                                Name: res[i].Student_firstname + ' ' + res[i].Student_lastname,
                                 subject: res[i].Subject_id,
                                 Room_id: res[i].Room_id,
                                 Room_name: res[i].Room_name
@@ -307,13 +340,18 @@
                 }
                 $.post('table/loadSection', {data: data}, function(res){
                     res = JSON.parse(res)
-                    console.log(res);
                     for(var i in res){
                         res[i].Section_start_time = convertime(res[i].Section_start_time)
                         res[i].Section_end_time = convertime(res[i].Section_end_time)
                         var time_str = res[i].Section_start_time + '-' + res[i].Section_end_time
                         time[mapDayWeek[res[i].Section_day]][time_str].isLearn = true
-                        time[mapDayWeek[res[i].Section_day]][time_str].Section_id = res[i].Section_id
+                        if(!time[mapDayWeek[res[i].Section_day]][time_str].Room[res[i].Room_id])
+                            time[mapDayWeek[res[i].Section_day]][time_str].Room[res[i].Room_id] = []
+                        time[mapDayWeek[res[i].Section_day]][time_str].Room[res[i].Room_id].push(
+                            { 
+                                Section_id: res[i].Section_id,
+                                Qty: res[i].Section_student_quantity
+                            })
                     }
                     loadWork()
                 })
@@ -341,12 +379,20 @@
                             var td = $('tr[data-day='+day+']').find('td[data-start="'+t_r[0]+'"][data-end="'+t_r[1]+'"]'),
                                 data = time[day][t]
                             var text_r = [], i = 0
+                            var duplicate = {}
                             for(var stu in data.register){
                                 i++
+                                if(!duplicate[data.register[stu].Room_id]){
+                                    for(var rm in data.Room[data.register[stu].Room_id]){
+                                        var r = data.Room[data.register[stu].Room_id][rm]
+                                        text_r.push(data.register[stu].Room_name + ', ' + r.Section_id + ', ' + r.Qty + '<br>')
+                                    }
+                                    duplicate[data.register[stu].Room_id] = true
+                                }
                                 if(i % 2 == 1){
-                                    text_r.push(data.register[stu].Room_name + ' ' + stu + '<br>')
+                                    text_r.push(stu + '<br>')
                                 }else{
-                                    text_r.push(data.register[stu].Room_name + ' ' + stu)
+                                    text_r.push(stu)
                                 }
                             }
                             td.html(text_r.join(''))
@@ -370,59 +416,45 @@
 
             resetTime()
 
-            $('button[name=btnfresh]').click(function(){
-                $('#room').trigger('change')
-            })
-
-            $('#tb').on('click', 'tbody > tr > td', function(){
-                var day = $(this).parents('tr').data('day')
-                var t = $(this).data('start') + '-' + $(this).data('end'),
-                    student = $('#student').val()
-                if(time[day][t] && time[day][t].studentIsFree){
-                    var data = {
-                        Student_id: student,
-                        Section_id: time[day][t].Section_id,
-                        Subject_id: $('#subject').val(),
-                        Room_id: $('#room').val(),
-                        Room_name: $('#room option:selected').text()
-                    }, json = {
-                        Student_id: student,
-                        Section_id: time[day][t].Section_id,
-                    }
-                    
-                    if(!time[day][t].register[student]){
-                        // add
-                        $.post('table/saveStudentWork_tmp', {data: json}, function(res){
-                            time[day][t].register[student] = { 
-                                subject: data.Subject_id,
-                                Room_id: data.Room_id,
-                                Room_name: data.Room_name
+            $('button[name=btnreport]').click(function(){
+                var html = '', data = {}
+                for(var day in time){
+                    for(var t in time[day]){
+                        for(var stu in time[day][t].register){
+                            var regis = time[day][t].register[stu]
+                            if(!data[stu]){
+                                data[stu] = []
                             }
-                            draw()
-                        })
-                    }
-                    else{
-                        // remove
-                        $.post('table/removeStudentWork_tmp', {data: data}, function(res){
-                            delete time[day][t].register[student]
-                            draw()
-                        })
+                            data[stu].push({ 
+                                student_id: stu,
+                                Name: regis.Name,
+                                Subject: regis.subject,
+                                Room_name: regis.Room_name,
+                                Time: t
+                            })
+                        }
                     }
                 }
+                for(var stu in data){
+                    for(var i in data[stu]){
+                        var regis = data[stu][i]
+                        html += '<tr><td>'+stu+'</td><td>'+regis.Name+'</td>'+
+                            '<td>'+regis.Subject+'</td>'+
+                            '<td>'+regis.Room_name+'</td>'+
+                            '<td>'+regis.Time+'</td></tr>'
+                    }
+                }
+                console.log(html);
+                $('#tbody_report').html(html)
+                tableToExcel('tb_report', 'ตารางการทำงาน TA')
             })
 
-            $('#student').change(function(){
-                resetTime(learn = false)
-                loadFreeTime()
+            $('button[name=btnfresh]').click(function(){
+                $('#subject').trigger('change')
             })
 
             $('#subject').change(function(){
                 resetTime(student = false)
-                resetTime()
-                loadSection()
-            })
-
-            $('#room').change(function(){
                 resetTime()
                 loadSection()
             })

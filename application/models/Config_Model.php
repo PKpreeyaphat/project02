@@ -20,6 +20,15 @@ class Config_Model extends CI_Model {
         }
     }
 
+    public function getHour()
+    {
+        $sel = $this->getConfig('MaxHour');
+        if(count($sel) > 0){
+            return $sel[0]->Config_value;
+        }
+        return 99;
+    }
+
     public function getConfig($name)
     {
         $this->db->where('Config_name', $name);

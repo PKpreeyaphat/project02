@@ -15,6 +15,15 @@ class StudentWork_Model extends CI_Model {
         $this->db->insert('StudentWork', $data);
     }
 
+    public function getHour($student, $semester)
+    {
+        $sql = "SELECT count(*) * 2 as TotalHour FROM `Section` a 
+            INNER JOIN StudentWork_tmp tmp ON a.Section_id = tmp.Section_id AND a.Subject_id = tmp.Subject_id
+            where tmp.Student_id = ? and a.Semester_ID = ?";
+        $res = $this->db->query($sql, array($student, $semester));
+        return $res->result()[0]->TotalHour;
+    }
+
     public function tmp2Work($data)
     {
         $select_tmp = $this->getWork_tmp($data);
@@ -32,8 +41,10 @@ class StudentWork_Model extends CI_Model {
 
     public function getWork_tmp($data)
     {
-        $this->db->join('Section', 'Section.Section_id = StudentWork_tmp.Section_id');
+        $this->db->join('Section', 'Section.Section_id = StudentWork_tmp.Section_id AND 
+                    StudentWork_tmp.Subject_id = Section.Subject_id');
         $this->db->join('Room', 'Room.Room_id = Section.Room_id');
+        $this->db->join('Student', 'Student.Student_id = StudentWork_tmp.Student_id');
         $this->db->where('Section.Subject_id', $data['Subject_id']);
         $res = $this->db->get('StudentWork_tmp');
         return $res->result();
@@ -41,8 +52,10 @@ class StudentWork_Model extends CI_Model {
 
     public function getWork($data)
     {
-        $this->db->join('Section', 'Section.Section_id = sw_Section_id');
+        $this->db->join('Section', 'Section.Section_id = sw_Section_id AND 
+                    Section.Subject_id = sw_Subject_id');
         $this->db->join('Room', 'Room.Room_id = Section.Room_id');
+        $this->db->join('Student', 'Student.Student_id = StudentWork.sw_Student_id');
         $this->db->where('Section.Subject_id', $data['Subject_id']);
         $res = $this->db->get('StudentWork');
         return $res->result();
@@ -52,6 +65,7 @@ class StudentWork_Model extends CI_Model {
     {
         $this->db->where('Student_id', $data['Student_id']);
         $this->db->where('Section_id', $data['Section_id']);
+        $this->db->where('Subject_id', $data['Subject_id']);
         $res = $this->db->delete('StudentWork_tmp');
     }
 
@@ -59,6 +73,7 @@ class StudentWork_Model extends CI_Model {
     {
         $this->db->where('sw_Student_id', $data['sw_Student_id']);
         $this->db->where('sw_Section_id', $data['sw_Section_id']);
+        $this->db->where('sw_Subject_id', $data['sw_Subject_id']);
         $res = $this->db->delete('StudentWork');
     }
 
@@ -72,6 +87,7 @@ class StudentWork_Model extends CI_Model {
     {
         $this->db->where('Student_id', $data['Student_id']);
         $this->db->where('Section_id', $data['Section_id']);
+        $this->db->where('Subject_id', $data['Subject_id']);
         $res = $this->db->get('StudentWork_tmp');
         return $res->result();
     }
@@ -80,6 +96,7 @@ class StudentWork_Model extends CI_Model {
     {
         $this->db->where('sw_Student_id', $data['Student_id']);
         $this->db->where('sw_Section_id', $data['Section_id']);
+        $this->db->where('sw_Subject_id', $data['Subject_id']);
         $res = $this->db->get('StudentWork');
         return $res->result();
     }

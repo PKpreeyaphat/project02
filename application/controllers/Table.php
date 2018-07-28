@@ -9,6 +9,7 @@ class Table extends CI_Controller {
     {
 		$this->load->model("Table_Model");
 		$this->load->model('AllSubject_Model');
+		
         $data['subject'] = $this->AllSubject_Model->getSubject();
     	$data['getRoom'] = $this->Table_Model->getRoom();
         $this->load->view('table_data',$data);
@@ -41,8 +42,25 @@ class Table extends CI_Controller {
 	public function saveStudentWork_tmp()
 	{
 		$this->load->model('StudentWork_Model');
+		$this->load->model('Config_Model');
+		
+		$response = array('isError' => false, 'Message' => '');
+
 		$data = $this->input->post('data');
-		$this->StudentWork_Model->save_tmp($data);
+		if(!isset($data['Semester_ID'])){
+			$data['Semester_ID'] = $this->CurrentSemester_Model->getSemester_ID();
+		}
+		$stu_hour = $this->StudentWork_Model->getHour($data['Student_id'], $data['Semester_ID']);
+		$maxhour = $this->Config_Model->getHour();
+		if($stu_hour >= $maxhour){
+			$response['isError'] = true; 
+			$response['Message'] = 'ชั่วโมงการทำงานเกินที่กำหนด'; 
+		}
+		else{
+			unset($data['Semester_ID']);
+			$this->StudentWork_Model->save_tmp($data);
+		}
+		echo json_encode($response);
 	}
 
 	public function removeStudentWork_tmp()
@@ -56,6 +74,9 @@ class Table extends CI_Controller {
 	{
 		$this->load->model('Section_Model');
 		$data = $this->input->post('data');
+		if(!isset($data['Semester_ID'])){
+			$data['Semester_ID'] = $this->CurrentSemester_Model->getSemester_ID();
+		}
 		$rs = $this->Section_Model->getTime($data);
 		echo json_encode($rs);
 	}

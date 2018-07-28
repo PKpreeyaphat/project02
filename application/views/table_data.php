@@ -335,8 +335,13 @@
                         res[i].Section_end_time = convertime(res[i].Section_end_time)
                         var time_str = res[i].Section_start_time + '-' + res[i].Section_end_time
                         time[mapDayWeek[res[i].Section_day]][time_str].isLearn = true
-                        time[mapDayWeek[res[i].Section_day]][time_str].Room[res[i].Room_id] = 
-                            { Section_id: res[i].Section_id }
+                        if(!time[mapDayWeek[res[i].Section_day]][time_str].Room[res[i].Room_id])
+                            time[mapDayWeek[res[i].Section_day]][time_str].Room[res[i].Room_id] = []
+                        time[mapDayWeek[res[i].Section_day]][time_str].Room[res[i].Room_id].push(
+                            { 
+                                Section_id: res[i].Section_id,
+                                Qty: res[i].Section_student_quantity
+                            })
                     }
                     loadWork_tmp()
                 })
@@ -366,7 +371,7 @@
                                 data = time[day][t]
                             var text_r = [], i = 0, isBusy = false
                             for(var stu in data.register){
-                                if(true || sel_room == data.register[stu].Room_name){
+                                if(sel_room == data.register[stu].Room_id){
                                     var html_stu = (stu == student)?  '<span style="color: blue;">'+stu + '</span>' : stu
                                     i++
                                     if(i % 2 == 1){
@@ -375,10 +380,23 @@
                                         text_r.push(data.register[stu].Room_name + ' ' + html_stu)
                                     }
                                 }
+                                else if(stu == student){
+                                    isBusy = true
+                                }
+                            }
+                            if(text_r.length > 0){
+                                for(var rm in data.Room[sel_room]){
+                                    var r = data.Room[sel_room][rm]
+                                    text_r.unshift(r.Section_id + ', ' + r.Qty + '<br>')
+                                }
                             }
                             td.html(text_r.join(''))
                             td.css('background-color', '')
-                            if(data.isLearn && data.studentIsFree && data.register[student]){
+                            if(isBusy){
+                                // แดง
+                                td.css('background-color', '#ff7878')
+                            }
+                            else if(data.isLearn && data.studentIsFree && data.register[student]){
                                 // ฟ้า
                                 td.css('background-color', '#99d4ff')
                             }
@@ -407,34 +425,51 @@
                         Section_id: time[day][t].Room[$('#room').val()].Section_id,
                         Subject_id: $('#subject').val(),
                         Room_id: $('#room').val(),
-                        Room_name: $('#room option:selected').text()
+                        Room_name: $('#room option:selected').data('name')
                     }, json = {
                         Student_id: student,
                         Section_id: time[day][t].Room[$('#room').val()].Section_id,
+                        Subject_id: $('#subject').val()
                     }
                     $('button[name=btnsave]').prop('disabled', true)
+                    $('button[name=btnsave]').html('ยืนยัน')
                     if(!time[day][t].register[student]){
                         // add
                         $.post('table/saveStudentWork_tmp', {data: json}, function(res){
-                            time[day][t].register[student] = { 
-                                Section_id: data.Section_id,
-                                subject: data.Subject_id,
-                                Room_id: data.Room_id,
-                                Room_name: data.Room_name
+                            res = JSON.parse(res)
+                            if(res.isError){
+                                swal('Warning', res.Message, 'error')
                             }
-                            draw()
+                            else{
+                                time[day][t].register[student] = { 
+                                    Section_id: data.Section_id,
+                                    subject: data.Subject_id,
+                                    Room_id: data.Room_id,
+                                    Room_name: data.Room_name
+                                }
+                                draw()
+                            }
                             $('button[name=btnsave]').prop('disabled', false)
                         })
                     }
                     else{
                         // remove
+                        if(time[day][t].register[student].Room_id != $('#room').val()){
+                            swal('Warning', 'ไม่สามารถลงได้', 'error')
+                            $('button[name=btnsave]').prop('disabled', false)
+                            return
+                        }
                         data.Section_id = time[day][t].register[student].Section_id
+                        data.Subject_id = time[day][t].register[student].subject
                         $.post('table/removeStudentWork_tmp', {data: data}, function(res){
                             delete time[day][t].register[student]
                             draw()
                             $('button[name=btnsave]').prop('disabled', false)
                         })
                     }
+                }
+                else if(time[day][t] && time[day][t].isLearn){
+                    swal('Warning', 'ไม่สามารถลงได้', 'error')
                 }
             })
 
@@ -485,10 +520,9 @@
                 }
                 $.post('table/loadRoom', {data: data}, function(res){
                     res = JSON.parse(res)
-                    console.log(res);
                     var html = ''
                     for(var i in res){
-                        html += '<option value="'+res[i].Room_id+'">'+res[i].Room_name+' '+res[i].Room_qty+'</option>'
+                        html += '<option data-name="'+res[i].Room_name+'" value="'+res[i].Room_id+'">'+res[i].Room_name+' '+res[i].Room_qty+'</option>'
                     }
                     $('#room').html(html)
                     data = {
