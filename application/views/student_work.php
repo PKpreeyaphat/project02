@@ -317,7 +317,6 @@
                 }
                 $.post('table/loadStudentWork', {data: data}, function(res){
                     res = JSON.parse(res)
-                    console.log(res);
                     for(var i in res){
                         res[i].Section_start_time = convertime(res[i].Section_start_time)
                         res[i].Section_end_time = convertime(res[i].Section_end_time)
