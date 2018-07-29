@@ -375,9 +375,9 @@
                                     var html_stu = (stu == student)?  '<span style="color: blue;">'+stu + '</span>' : stu
                                     i++
                                     if(i % 2 == 1){
-                                        text_r.push(data.register[stu].Room_name + ' ' + html_stu + '<br>')
+                                        text_r.push(html_stu + '<br>')
                                     }else{
-                                        text_r.push(data.register[stu].Room_name + ' ' + html_stu)
+                                        text_r.push(html_stu)
                                     }
                                 }
                                 else if(stu == student){
@@ -522,7 +522,7 @@
                     res = JSON.parse(res)
                     var html = ''
                     for(var i in res){
-                        html += '<option data-name="'+res[i].Room_name+'" value="'+res[i].Room_id+'">'+res[i].Room_name+' '+res[i].Room_qty+'</option>'
+                        html += '<option data-name="'+res[i].Room_name+'" value="'+res[i].Room_id+'">'+res[i].Room_name+' ('+res[i].Room_qty+' คน)</option>'
                     }
                     $('#room').html(html)
                     data = {
