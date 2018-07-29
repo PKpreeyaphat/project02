@@ -419,7 +419,7 @@
 
             $('button[name=btnreport]').click(function(){
                 var html = '', data = {},
-                    day = {0: 'อาทิตย์', 1: 'จันทร์', 2 :'อังคาร', 3: 'พุธ', 4: 'พฤหัส', 5:'ศุกร์', 6:'เสาร์'}
+                    Day = {0: 'อาทิตย์', 1: 'จันทร์', 2 :'อังคาร', 3: 'พุธ', 4: 'พฤหัส', 5:'ศุกร์', 6:'เสาร์'}
                 for(var day in time){
                     for(var t in time[day]){
                         for(var stu in time[day][t].register){
@@ -432,7 +432,7 @@
                                 Name: regis.Name,
                                 Subject: regis.subject,
                                 Room_name: regis.Room_name,
-                                Day: day[day],
+                                Day: Day[day],
                                 Time: t
                             })
                         }
