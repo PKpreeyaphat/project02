@@ -385,7 +385,7 @@
                                 if(!duplicate[data.register[stu].Room_id]){
                                     for(var rm in data.Room[data.register[stu].Room_id]){
                                         var r = data.Room[data.register[stu].Room_id][rm]
-                                        text_r.push(data.register[stu].Room_name + ', ' + r.Section_id + ', ' + r.Qty + '<br>')
+                                        text_r.push('<b>'+data.register[stu].Room_name + ', ' + r.Section_id + ', ' + r.Qty + '</b><br>')
                                     }
                                     duplicate[data.register[stu].Room_id] = true
                                 }
