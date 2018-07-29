@@ -188,6 +188,7 @@
                                             <th>ชื่อ</th>
                                             <th>วิชา</th>
                                             <th>ห้อง</th>
+                                            <th>วัน</th>
                                             <th>เวลา</th>
                                         </tr>
                                     </thead>
@@ -417,7 +418,8 @@
             resetTime()
 
             $('button[name=btnreport]').click(function(){
-                var html = '', data = {}
+                var html = '', data = {},
+                    day = {0: 'อาทิตย์', 1: 'จันทร์', 2 :'อังคาร', 3: 'พุธ', 4: 'พฤหัส', 5:'ศุกร์', 6:'เสาร์'}
                 for(var day in time){
                     for(var t in time[day]){
                         for(var stu in time[day][t].register){
@@ -430,6 +432,7 @@
                                 Name: regis.Name,
                                 Subject: regis.subject,
                                 Room_name: regis.Room_name,
+                                Day: day[day],
                                 Time: t
                             })
                         }
@@ -441,6 +444,7 @@
                         html += '<tr><td>'+stu+'</td><td>'+regis.Name+'</td>'+
                             '<td>'+regis.Subject+'</td>'+
                             '<td>'+regis.Room_name+'</td>'+
+                            '<td>'+regis.Day+'</td>'+
                             '<td>'+regis.Time+'</td></tr>'
                     }
                 }
