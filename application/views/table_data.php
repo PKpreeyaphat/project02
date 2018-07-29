@@ -422,13 +422,13 @@
                 if(time[day][t] && time[day][t].studentIsFree){
                     var data = {
                         Student_id: student,
-                        Section_id: time[day][t].Room[$('#room').val()].Section_id,
+                        Section_id: time[day][t].Room[$('#room').val()][0].Section_id,
                         Subject_id: $('#subject').val(),
                         Room_id: $('#room').val(),
                         Room_name: $('#room option:selected').data('name')
                     }, json = {
                         Student_id: student,
-                        Section_id: time[day][t].Room[$('#room').val()].Section_id,
+                        Section_id: time[day][t].Room[$('#room').val()][0].Section_id,
                         Subject_id: $('#subject').val()
                     }
                     $('button[name=btnsave]').prop('disabled', true)

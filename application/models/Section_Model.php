@@ -48,11 +48,12 @@ class Section_Model extends CI_Model {
         return $res->result();
     }
 
-    public function getRoom($id)
+    public function getRoom($id, $semester_id)
     {
         $this->db->select('Section.Room_id, Room.Room_name, Room.Room_qty');
         $this->db->join('Room', 'Room.Room_id = Section.Room_id');
         $this->db->where('Section.Subject_id', $id);
+        $this->db->where('Section.Semester_ID', $semester_id);
         $this->db->group_by('Section.Room_id,Room.Room_qty'); 
         $this->db->order_by('Section.Room_id'); 
         $res = $this->db->get('Section');

@@ -96,7 +96,10 @@ class Table extends CI_Controller {
 	{
 		$this->load->model('Section_Model');
 		$data = $this->input->post('data');
-		$rs = $this->Section_Model->getRoom($data['id']);
+		if(!isset($data['Semester_ID'])){
+			$data['Semester_ID'] = $this->CurrentSemester_Model->getSemester_ID();
+		}
+		$rs = $this->Section_Model->getRoom($data['id'], $data['Semester_ID']);
 		echo json_encode($rs);
 	}
 	
