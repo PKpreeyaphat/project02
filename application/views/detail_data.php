@@ -79,7 +79,7 @@
 										<div class="form-line">
 											<select class="form-control show-tick" name="Semester_ID">
 												<?php foreach ($semester as $x) {
-													echo '<option value="<?=$x->Semester_ID ?>">ปี <?=$x->Semester_Year." ภาค ". $x->Semester_Name ?></option>';
+													echo '<option value="'.$x->Semester_ID.'">ปี '.$x->Semester_Year." ภาค ". $x->Semester_Name.'</option>';
 												} ?> 
 											</select>
 										</div>
