@@ -448,7 +448,6 @@
                             '<td>'+regis.Time+'</td></tr>'
                     }
                 }
-                console.log(html);
                 $('#tbody_report').html(html)
                 tableToExcel('tb_report', 'ตารางการทำงาน TA')
             })
