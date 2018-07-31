@@ -195,7 +195,7 @@
                                 <table id="tb_report" style="display: none;">
                                     <thead>
                                         <tr>
-                                            <th>นิสิต</th>
+                                            <th>รหัสนิสิต</th>
                                             <th>วิชา</th>
                                             <th>ห้อง</th>
                                             <th>วัน</th>
@@ -457,7 +457,7 @@
                 for(var stu in data){
                     for(var i in data[stu]){
                         var regis = data[stu][i]
-                        html += '<tr><td>'+stu+' '+regis.Name+'</td>'+
+                        html += '<tr><td>'+stu+'</td>'+
                             '<td>'+regis.Subject+'</td>'+
                             '<td>'+regis.Room_name+'</td>'+
                             '<td>'+regis.Day+'</td>'+
