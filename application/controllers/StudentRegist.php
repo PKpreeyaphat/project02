@@ -60,6 +60,10 @@ class StudentRegist extends CI_Controller {
             $student = $student[0];
             $student->Student_email = $Student_email;
             $student->Student_tel = $Student_tel;
+            unset($student->Grade);
+            unset($student->Semester_ID);
+            unset($student->Subject_id);
+            unset($student->Status);
             $this->student_Model->update($Student_id, $student);
 
             $data = array(
