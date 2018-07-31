@@ -197,6 +197,7 @@
                                         <tr>
                                             <th>รหัสนิสิต</th>
                                             <th>วิชา</th>
+                                            <th>กลุ่ม</th>
                                             <th>ห้อง</th>
                                             <th>วัน</th>
                                             <th>เวลา</th>
@@ -336,6 +337,7 @@
                             sh_time.register[res[i].sw_Student_id] = {
                                 Name: res[i].Student_firstname + ' ' + res[i].Student_lastname,
                                 subject: res[i].Subject_id,
+                                Section_id: res[i].Section_id,
                                 Room_id: res[i].Room_id,
                                 Room_name: res[i].Room_name
                             }
@@ -442,9 +444,11 @@
                                 if(!data[stu]){
                                     data[stu] = []
                                 }
+                                console.log(regis);
                                 data[stu].push({ 
                                     student_id: stu,
                                     Name: regis.Name,
+                                    Section_id: regis.Section_id,
                                     Subject: regis.subject,
                                     Room_name: regis.Room_name,
                                     Day: Day[day],
@@ -459,6 +463,7 @@
                         var regis = data[stu][i]
                         html += '<tr><td>'+stu+'</td>'+
                             '<td>'+regis.Subject+'</td>'+
+                            '<td>'+regis.Section_id+'</td>'+
                             '<td>'+regis.Room_name+'</td>'+
                             '<td>'+regis.Day+'</td>'+
                             '<td>'+regis.Time+'</td></tr>'
