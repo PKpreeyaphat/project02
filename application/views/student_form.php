@@ -135,9 +135,10 @@
                         email: $('input[name=email]').val(),
                         tel: $('input[name=tel]').val()
                     }, function(data){
+                        console.log(data);
                         email = $('input[name=email]').val();
                         tel = $('input[name=tel]').val();
-                        swal("บันทึกสำเร็จ!", "รายละเอียดถูกบันทึกเรียบร้อย", "success");             
+                        swal("บันทึกสำเร็จ!", "รายละเอียดถูกบันทึกเรียบร้อย", "success");           
                     })
                 });
             });

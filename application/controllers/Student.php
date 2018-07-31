@@ -31,6 +31,10 @@ class Student extends CI_Controller {
             $student->Student_grade = $grade;
             $student->Student_email = $email;
             $student->Student_tel = $tel;
+            unset($student->Grade);
+            unset($student->Semester_ID);
+            unset($student->Subject_id);
+            unset($student->Status);
             $this->Student_Model->update($student->Student_id, $student);
         }
     }
