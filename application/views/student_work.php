@@ -34,6 +34,8 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="<?php echo base_url() ?>/css/themes/all-themes.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <style>
     table.dataTable tbody>tr.selected,table.dataTable tbody>tr>.selected{background-color:#B0BED9}table.dataTable.stripe tbody>tr.odd.selected,table.dataTable.stripe tbody>tr.odd>.selected,table.dataTable.display tbody>tr.odd.selected,table.dataTable.display tbody>tr.odd>.selected{background-color:#acbad4}table.dataTable.hover tbody>tr.selected:hover,table.dataTable.hover tbody>tr>.selected:hover,table.dataTable.display tbody>tr.selected:hover,table.dataTable.display tbody>tr>.selected:hover{background-color:#aab7d1}table.dataTable.order-column tbody>tr.selected>.sorting_1,table.dataTable.order-column tbody>tr.selected>.sorting_2,table.dataTable.order-column tbody>tr.selected>.sorting_3,table.dataTable.order-column tbody>tr>.selected,table.dataTable.display tbody>tr.selected>.sorting_1,table.dataTable.display tbody>tr.selected>.sorting_2,table.dataTable.display tbody>tr.selected>.sorting_3,table.dataTable.display tbody>tr>.selected{background-color:#acbad5}table.dataTable.display tbody>tr.odd.selected>.sorting_1,table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_1{background-color:#a6b4cd}table.dataTable.display tbody>tr.odd.selected>.sorting_2,table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_2{background-color:#a8b5cf}table.dataTable.display tbody>tr.odd.selected>.sorting_3,table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_3{background-color:#a9b7d1}table.dataTable.display tbody>tr.even.selected>.sorting_1,table.dataTable.order-column.stripe tbody>tr.even.selected>.sorting_1{background-color:#acbad5}table.dataTable.display tbody>tr.even.selected>.sorting_2,table.dataTable.order-column.stripe tbody>tr.even.selected>.sorting_2{background-color:#aebcd6}table.dataTable.display tbody>tr.even.selected>.sorting_3,table.dataTable.order-column.stripe tbody>tr.even.selected>.sorting_3{background-color:#afbdd8}table.dataTable.display tbody>tr.odd>.selected,table.dataTable.order-column.stripe tbody>tr.odd>.selected{background-color:#a6b4cd}table.dataTable.display tbody>tr.even>.selected,table.dataTable.order-column.stripe tbody>tr.even>.selected{background-color:#acbad5}table.dataTable.display tbody>tr.selected:hover>.sorting_1,table.dataTable.order-column.hover tbody>tr.selected:hover>.sorting_1{background-color:#a2aec7}table.dataTable.display tbody>tr.selected:hover>.sorting_2,table.dataTable.order-column.hover tbody>tr.selected:hover>.sorting_2{background-color:#a3b0c9}table.dataTable.display tbody>tr.selected:hover>.sorting_3,table.dataTable.order-column.hover tbody>tr.selected:hover>.sorting_3{background-color:#a5b2cb}table.dataTable.display tbody>tr:hover>.selected,table.dataTable.display tbody>tr>.selected:hover,table.dataTable.order-column.hover tbody>tr:hover>.selected,table.dataTable.order-column.hover tbody>tr>.selected:hover{background-color:#a2aec7}table.dataTable tbody td.select-checkbox,table.dataTable tbody th.select-checkbox{position:relative}table.dataTable tbody td.select-checkbox:before,table.dataTable tbody td.select-checkbox:after,table.dataTable tbody th.select-checkbox:before,table.dataTable tbody th.select-checkbox:after{display:block;position:absolute;top:1.2em;left:50%;width:12px;height:12px;box-sizing:border-box}table.dataTable tbody td.select-checkbox:before,table.dataTable tbody th.select-checkbox:before{content:' ';margin-top:-6px;margin-left:-6px;border:1px solid black;border-radius:3px}table.dataTable tr.selected td.select-checkbox:after,table.dataTable tr.selected th.select-checkbox:after{content:'\2714';margin-top:-11px;margin-left:-4px;text-align:center;text-shadow:1px 1px #B0BED9, -1px -1px #B0BED9, 1px -1px #B0BED9, -1px 1px #B0BED9}div.dataTables_wrapper span.select-info,div.dataTables_wrapper span.select-item{margin-left:0.5em}@media screen and (max-width: 640px){div.dataTables_wrapper span.select-info,div.dataTables_wrapper span.select-item{margin-left:0;display:block}}
     table > thead >tr > th {
@@ -83,13 +85,22 @@
                                     </select>
 
                                 </div>
-                                <div class="col-md-1">
-                                    <p></p>
-                                    <button name="btnreport" class="btn btn-sm btn-default m-t-20 waves-effect">Report</button>
+                                <div class="col-md-3">
+                                    <p>
+                                        <b>เลือกห้อง :</b>
+                                    </p>
+                                    <select class="form-control show-tick" id="room">
+                                    <option>———กรุณาเลือก———</option>
+                                    </select>
+
                                 </div>
                                 <div class="col-md-1">
                                     <p></p>
                                     <button name="btnfresh" class="btn btn-sm btn-default m-t-20 waves-effect"><i class="material-icons">refresh</i></button>
+                                </div>
+                                <div class="col-md-1">
+                                    <p></p>
+                                    <button name="btnreport" class="btn btn-sm btn-default m-t-20 waves-effect"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp; Report</button>
                                 </div>
                             </div>
                         </div>
@@ -184,8 +195,7 @@
                                 <table id="tb_report" style="display: none;">
                                     <thead>
                                         <tr>
-                                            <th>รหัสนิสิต</th>
-                                            <th>ชื่อ</th>
+                                            <th>นิสิต</th>
                                             <th>วิชา</th>
                                             <th>ห้อง</th>
                                             <th>วัน</th>
@@ -336,7 +346,8 @@
             },
             loadSection = function(){
                 var data = {
-                    Subject_id: $('#subject').val()
+                    Subject_id: $('#subject').val(),
+                    Room_id: $('#room').val()
                 }
                 $.post('table/loadSection', {data: data}, function(res){
                     res = JSON.parse(res)
@@ -372,6 +383,7 @@
             },
             draw = function(){
                 var student = $('#student').val()
+                var sel_room = $('#room').val()
                 for(var day in  time){
                     for(var t in time[day]){
                         var t_r = t.split('-')
@@ -381,18 +393,20 @@
                             var text_r = [], i = 0
                             var duplicate = {}
                             for(var stu in data.register){
-                                i++
-                                if(!duplicate[data.register[stu].Room_id]){
-                                    for(var rm in data.Room[data.register[stu].Room_id]){
-                                        var r = data.Room[data.register[stu].Room_id][rm]
-                                        text_r.push('<b>'+data.register[stu].Room_name + ', ' + r.Section_id + ', ' + r.Qty + '</b><br>')
+                                if(sel_room == 'All' || sel_room == data.register[stu].Room_id){
+                                    i++
+                                    if(!duplicate[data.register[stu].Room_id]){
+                                        for(var rm in data.Room[data.register[stu].Room_id]){
+                                            var r = data.Room[data.register[stu].Room_id][rm]
+                                            text_r.push('<b>'+data.register[stu].Room_name + ' กลุ่ม ' + r.Section_id + '  (' + r.Qty + ' คน)</b><br>')
+                                        }
+                                        duplicate[data.register[stu].Room_id] = true
                                     }
-                                    duplicate[data.register[stu].Room_id] = true
-                                }
-                                if(i % 2 == 1){
-                                    text_r.push(stu + '<br>')
-                                }else{
-                                    text_r.push(stu)
+                                    if(i % 2 == 1){
+                                        text_r.push(stu + '<br>')
+                                    }else{
+                                        text_r.push(stu+ '<br>')
+                                    }
                                 }
                             }
                             td.html(text_r.join(''))
@@ -419,28 +433,31 @@
             $('button[name=btnreport]').click(function(){
                 var html = '', data = {},
                     Day = {0: 'อาทิตย์', 1: 'จันทร์', 2 :'อังคาร', 3: 'พุธ', 4: 'พฤหัส', 5:'ศุกร์', 6:'เสาร์'}
+                var sel_room = $('#room').val()
                 for(var day in time){
                     for(var t in time[day]){
                         for(var stu in time[day][t].register){
                             var regis = time[day][t].register[stu]
-                            if(!data[stu]){
-                                data[stu] = []
+                            if(sel_room == 'All' || regis.Room_id == sel_room){
+                                if(!data[stu]){
+                                    data[stu] = []
+                                }
+                                data[stu].push({ 
+                                    student_id: stu,
+                                    Name: regis.Name,
+                                    Subject: regis.subject,
+                                    Room_name: regis.Room_name,
+                                    Day: Day[day],
+                                    Time: t
+                                })
                             }
-                            data[stu].push({ 
-                                student_id: stu,
-                                Name: regis.Name,
-                                Subject: regis.subject,
-                                Room_name: regis.Room_name,
-                                Day: Day[day],
-                                Time: t
-                            })
                         }
                     }
                 }
                 for(var stu in data){
                     for(var i in data[stu]){
                         var regis = data[stu][i]
-                        html += '<tr><td>'+stu+'</td><td>'+regis.Name+'</td>'+
+                        html += '<tr><td>'+stu+' '+regis.Name+'</td>'+
                             '<td>'+regis.Subject+'</td>'+
                             '<td>'+regis.Room_name+'</td>'+
                             '<td>'+regis.Day+'</td>'+
@@ -457,6 +474,32 @@
 
             $('#subject').change(function(){
                 resetTime(student = false)
+                var data = {
+                    id: $(this).val()
+                }
+                $.post('table/loadRoom', {data: data}, function(res){
+                    res = JSON.parse(res)
+                    var html = '<option value="All">All</option>'
+                    for(var i in res){
+                        html += '<option data-name="'+res[i].Room_name+'" value="'+res[i].Room_id+'">'+res[i].Room_name+' ('+res[i].Room_qty+' คน)</option>'
+                    }
+                    $('#room').html(html)
+                    data = {
+                        Subject_id: $('#subject').val()
+                    }
+                    $.post('table/loadStudent', {data: data}, function(res){
+                        res = JSON.parse(res)
+                        var html = ''
+                        for(var i in res){
+                            html += '<option value="'+res[i].Student_id+'">'+res[i].Student_firstname+' '+res[i].Student_lastname+'</option>'
+                        }
+                        $('#student').html(html)
+                        $('#room').trigger('change')
+                    })
+                })
+            })
+
+            $('#room').change(function(){
                 resetTime()
                 loadSection()
             })

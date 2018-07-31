@@ -387,7 +387,7 @@
                             if(text_r.length > 0){
                                 for(var rm in data.Room[sel_room]){
                                     var r = data.Room[sel_room][rm]
-                                    text_r.unshift(r.Section_id + ', ' + r.Qty + '<br>')
+                                    text_r.unshift('กลุ่ม ' + r.Section_id + ' (' + r.Qty + ' คน)<br>')
                                 }
                             }
                             td.html(text_r.join(''))
@@ -467,6 +467,7 @@
                             $('button[name=btnsave]').prop('disabled', false)
                         })
                     }
+                    $('#subject').trigger('change')
                 }
                 else if(time[day][t] && time[day][t].isLearn){
                     swal('Warning', 'ไม่สามารถลงได้', 'error')
@@ -519,20 +520,26 @@
                     id: $(this).val()
                 }
                 $.post('table/loadRoom', {data: data}, function(res){
+                    var sel_room = $('#room').val()
                     res = JSON.parse(res)
                     var html = ''
                     for(var i in res){
-                        html += '<option data-name="'+res[i].Room_name+'" value="'+res[i].Room_id+'">'+res[i].Room_name+' ('+res[i].Room_qty+' คน)</option>'
+                        html += '<option '+((sel_room == res[i].Room_id)? 'selected': '')+' data-name="'+res[i].Room_name+'" value="'+res[i].Room_id+'">'+res[i].Room_name+' ('+res[i].Room_qty+' คน)</option>'
                     }
                     $('#room').html(html)
                     data = {
                         Subject_id: $('#subject').val()
                     }
                     $.post('table/loadStudent', {data: data}, function(res){
+                        var sel_stu = $('#student').val()
                         res = JSON.parse(res)
                         var html = ''
                         for(var i in res){
-                            html += '<option value="'+res[i].Student_id+'">'+res[i].Student_firstname+' '+res[i].Student_lastname+'</option>'
+                            var remain = '(เหลือ '+res[i].RemainHour+' ชม.)'
+                            if(res[i].RemainHour < 0) {
+                                remain = '(เกิน '+Math.abs(res[i].RemainHour)+' ชม.)'
+                            }
+                            html += '<option '+((sel_stu == res[i].Student_id)? 'selected': '')+' value="'+res[i].Student_id+'">'+res[i].Student_firstname+' '+res[i].Student_lastname+' '+remain+'</option>'
                         }
                         $('#student').html(html)
                         $('#room').trigger('change')

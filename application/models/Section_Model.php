@@ -28,9 +28,16 @@ class Section_Model extends CI_Model {
         $res = $this->db->get('Section');
         return $res->result();
     }
-
+    
     public function getRegisterSubject($data)
     {
+        $this->db->select('*, 
+            (select (select Config_value from Config where Config_name = "MaxHour") - COUNT(*) * 2 
+            from StudentWork_tmp tmp 
+            inner join Section on Section.Section_id = tmp.Section_id AND Section.Subject_id = tmp.Subject_id
+            where tmp.Student_id = Student.Student_id AND Section.Semester_ID = RegisterSubject.Semester_ID) 
+            AS RemainHour
+        ');
         $this->db->join('Student', 'Student.Student_id = RegisterSubject.Student_id');
         $this->db->where('RegisterSubject.Subject_id', $data['Subject_id']);
         $this->db->where('RegisterSubject.Semester_ID', $data['Semester_ID']);
