@@ -35,19 +35,85 @@
     <link href="<?php echo base_url() ?>/css/themes/all-themes.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <style name="print">
+    @media print { 
+        body {
+            -webkit-print-color-adjust: exact !important;
+        }
+        .table thead tr th {
+            background-color: #00a968 !important;
+            color: white !important;
+        }
+        .table tbody tr th {
+            background-color: #A0A0A0 !important;
+            color: white !important;
+        }
+        .table  .white{
+            color: white !important;
+        }
+        .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > th, .table > caption + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > td, .table > thead:first-child > tr:first-child > td {
+            border-top: 0;
+        }
+        .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+            border: 1px solid #ddd;
+        }
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+        .table-bordered {
+            border: 1px solid #ddd;
+        }
 
-    <style>
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+        .learn{
+            background-color: #C0D0FF !important;
+        }
+        .white{
+            color: white !important;
+        }
+    }
+    body{
+        -webkit-print-color-adjust:exact;
+    }
+    .white{
+        color: white !important;
+    }
     table.dataTable tbody>tr.selected,table.dataTable tbody>tr>.selected{background-color:#B0BED9}table.dataTable.stripe tbody>tr.odd.selected,table.dataTable.stripe tbody>tr.odd>.selected,table.dataTable.display tbody>tr.odd.selected,table.dataTable.display tbody>tr.odd>.selected{background-color:#acbad4}table.dataTable.hover tbody>tr.selected:hover,table.dataTable.hover tbody>tr>.selected:hover,table.dataTable.display tbody>tr.selected:hover,table.dataTable.display tbody>tr>.selected:hover{background-color:#aab7d1}table.dataTable.order-column tbody>tr.selected>.sorting_1,table.dataTable.order-column tbody>tr.selected>.sorting_2,table.dataTable.order-column tbody>tr.selected>.sorting_3,table.dataTable.order-column tbody>tr>.selected,table.dataTable.display tbody>tr.selected>.sorting_1,table.dataTable.display tbody>tr.selected>.sorting_2,table.dataTable.display tbody>tr.selected>.sorting_3,table.dataTable.display tbody>tr>.selected{background-color:#acbad5}table.dataTable.display tbody>tr.odd.selected>.sorting_1,table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_1{background-color:#a6b4cd}table.dataTable.display tbody>tr.odd.selected>.sorting_2,table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_2{background-color:#a8b5cf}table.dataTable.display tbody>tr.odd.selected>.sorting_3,table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_3{background-color:#a9b7d1}table.dataTable.display tbody>tr.even.selected>.sorting_1,table.dataTable.order-column.stripe tbody>tr.even.selected>.sorting_1{background-color:#acbad5}table.dataTable.display tbody>tr.even.selected>.sorting_2,table.dataTable.order-column.stripe tbody>tr.even.selected>.sorting_2{background-color:#aebcd6}table.dataTable.display tbody>tr.even.selected>.sorting_3,table.dataTable.order-column.stripe tbody>tr.even.selected>.sorting_3{background-color:#afbdd8}table.dataTable.display tbody>tr.odd>.selected,table.dataTable.order-column.stripe tbody>tr.odd>.selected{background-color:#a6b4cd}table.dataTable.display tbody>tr.even>.selected,table.dataTable.order-column.stripe tbody>tr.even>.selected{background-color:#acbad5}table.dataTable.display tbody>tr.selected:hover>.sorting_1,table.dataTable.order-column.hover tbody>tr.selected:hover>.sorting_1{background-color:#a2aec7}table.dataTable.display tbody>tr.selected:hover>.sorting_2,table.dataTable.order-column.hover tbody>tr.selected:hover>.sorting_2{background-color:#a3b0c9}table.dataTable.display tbody>tr.selected:hover>.sorting_3,table.dataTable.order-column.hover tbody>tr.selected:hover>.sorting_3{background-color:#a5b2cb}table.dataTable.display tbody>tr:hover>.selected,table.dataTable.display tbody>tr>.selected:hover,table.dataTable.order-column.hover tbody>tr:hover>.selected,table.dataTable.order-column.hover tbody>tr>.selected:hover{background-color:#a2aec7}table.dataTable tbody td.select-checkbox,table.dataTable tbody th.select-checkbox{position:relative}table.dataTable tbody td.select-checkbox:before,table.dataTable tbody td.select-checkbox:after,table.dataTable tbody th.select-checkbox:before,table.dataTable tbody th.select-checkbox:after{display:block;position:absolute;top:1.2em;left:50%;width:12px;height:12px;box-sizing:border-box}table.dataTable tbody td.select-checkbox:before,table.dataTable tbody th.select-checkbox:before{content:' ';margin-top:-6px;margin-left:-6px;border:1px solid black;border-radius:3px}table.dataTable tr.selected td.select-checkbox:after,table.dataTable tr.selected th.select-checkbox:after{content:'\2714';margin-top:-11px;margin-left:-4px;text-align:center;text-shadow:1px 1px #B0BED9, -1px -1px #B0BED9, 1px -1px #B0BED9, -1px 1px #B0BED9}div.dataTables_wrapper span.select-info,div.dataTables_wrapper span.select-item{margin-left:0.5em}@media screen and (max-width: 640px){div.dataTables_wrapper span.select-info,div.dataTables_wrapper span.select-item{margin-left:0;display:block}}
-    table > thead >tr > th {
+    table > thead > tr > th {
         background-color: #00a968;
         color: white;
     }
-    table > tbody tr > th{
+    table > tbody > tr > th{
         background-color: #A0A0A0;
         color: white;
     }
     #tb > tbody > tr > td {
         cursor: pointer;
+    }
+    .table > caption + thead > tr:first-child > th, .table > colgroup + thead > tr:first-child > th, .table > thead:first-child > tr:first-child > th, .table > caption + thead > tr:first-child > td, .table > colgroup + thead > tr:first-child > td, .table > thead:first-child > tr:first-child > td {
+        border-top: 0;
+    }
+    .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+        border: 1px solid #ddd;
+    }
+    table {
+        border-spacing: 0;
+        border-collapse: collapse;
+    }
+    .table-bordered {
+        border: 1px solid #ddd;
+    }
+
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
     }
     </style>
 </head>
@@ -100,6 +166,12 @@
                                 </div>
                                 <div class="col-md-1">
                                     <p></p>
+                                    <button name="btnprint" class="btn btn-sm btn-default m-t-20 waves-effect" data-placement="right" data-toggle="tooltip" title="" data-original-title="พิมพ์">
+                                        <i class="fa fa-print"></i>
+                                    </button>
+                                </div>
+                                <div class="col-md-1">
+                                    <p></p>
                                     <button name="btnreport" class="btn btn-sm btn-default m-t-20 waves-effect"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp; Report</button>
                                 </div>
                             </div>
@@ -109,14 +181,14 @@
                                 <table id="tb" class="table table-bordered display dataTable with-check">
                                     <thead>
                                         <tr>
-                                        <th><center>วัน-เวลา</th>
-                                            <th><center>08.00-09.50</th>
-                                            <th><center>10.00-11.50</th>
-                                            <th><center>12.00-13.00</th>
-                                            <th><center>13.00-14.50</th>
-                                            <th><center>15.00-16.50</th>
-                                            <th><center>17.00-18.50</th>
-                                            <th><center>19.00-20.50</th>
+                                            <th class="white"><center>วัน-เวลา</center></th>
+                                            <th class="white"><center>08.00-09.50</center></th>
+                                            <th class="white"><center>10.00-11.50</center></th>
+                                            <th class="white"><center>12.00-13.00</center></th>
+                                            <th class="white"><center>13.00-14.50</center></th>
+                                            <th class="white"><center>15.00-16.50</center></th>
+                                            <th class="white"><center>17.00-18.50</center></th>
+                                            <th class="white"><center>19.00-20.50</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -432,6 +504,22 @@
 
             resetTime()
 
+            $('button[name=btnprint]').click(function(){
+                var mywindow = window.open('', 'new div', 'height=400,width=600');
+                mywindow.document.write('<html><head><title></title>');
+                mywindow.document.write('<style>'+$('style[name=print]').html()+ '</style><style type="text/css" media="print">@page { size: landscape; }</style>');
+                mywindow.document.write('<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">')
+                mywindow.document.write('<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">')
+                mywindow.document.write('<link href="<?php echo base_url() ?>/css/style.css" rel="stylesheet">')
+                mywindow.document.write('</head><body onload="window.print();window.close();">');
+                mywindow.document.write($('.body.table-responsive').html());
+                mywindow.document.write('</body></html>');
+                mywindow.document.close();
+                mywindow.focus();
+
+                return true;
+            })
+
             $('button[name=btnreport]').click(function(){
                 var html = '', data = {},
                     Day = {0: 'อาทิตย์', 1: 'จันทร์', 2 :'อังคาร', 3: 'พุธ', 4: 'พฤหัส', 5:'ศุกร์', 6:'เสาร์'}
@@ -444,7 +532,6 @@
                                 if(!data[stu]){
                                     data[stu] = []
                                 }
-                                console.log(regis);
                                 data[stu].push({ 
                                     student_id: stu,
                                     Name: regis.Name,
@@ -529,7 +616,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 
     <!-- (Optional) Latest compiled and minified JavaScript translation files -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-*.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-*.min.js"></script> -->
 
     
 
