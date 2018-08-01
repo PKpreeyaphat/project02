@@ -195,7 +195,7 @@
                                 <table id="tb_report" style="display: none;">
                                     <thead>
                                         <tr>
-                                            <th>รหัสนิสิต</th>
+                                            <th>นิสิต</th>
                                             <th>วิชา</th>
                                             <th>กลุ่ม</th>
                                             <th>ห้อง</th>
@@ -459,14 +459,20 @@
                     }
                 }
                 for(var stu in data){
+                    var pre_stu = '', post_stu = ''
                     for(var i in data[stu]){
+                        var txt_stu = ''
                         var regis = data[stu][i]
-                        html += '<tr><td>'+stu+'</td>'+
+                        pre_stu = stu;
+                        if(pre_stu != post_stu)
+                            txt_stu = stu+' '+regis.Name
+                        html += '<tr><td>'+txt_stu+'</td>'+
                             '<td>'+regis.Subject+'</td>'+
                             '<td>'+regis.Section_id+'</td>'+
                             '<td>'+regis.Room_name+'</td>'+
                             '<td>'+regis.Day+'</td>'+
                             '<td>'+regis.Time+'</td></tr>'
+                        post_stu = stu
                     }
                 }
                 $('#tbody_report').html(html)
