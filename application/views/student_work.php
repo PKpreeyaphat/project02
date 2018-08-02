@@ -466,6 +466,7 @@
                                 data = time[day][t]
                             var text_r = [], i = 0
                             var duplicate = {}
+                            var dict_room = {}
                             for(var stu in data.register){
                                 if(sel_room == 'All' || sel_room == data.register[stu].Room_id){
                                     i++
@@ -473,17 +474,24 @@
                                         for(var rm in data.Room[data.register[stu].Room_id]){
                                             var r = data.Room[data.register[stu].Room_id][rm]
                                             text_r.push('<b>'+data.register[stu].Room_name + ' กลุ่ม ' + r.Section_id + '  (' + r.Qty + ' คน)</b><br>')
+                                            dict_room[data.register[stu].Room_name] = 
+                                            { 
+                                                text: '<b>'+data.register[stu].Room_name + ' กลุ่ม ' + r.Section_id + '  (' + r.Qty + ' คน)</b><br>',
+                                                register: []
+                                            }
                                         }
                                         duplicate[data.register[stu].Room_id] = true
                                     }
-                                    if(i % 2 == 1){
-                                        text_r.push(stu + '<br>')
-                                    }else{
-                                        text_r.push(stu+ '<br>')
-                                    }
+                                    dict_room[data.register[stu].Room_name].register.push(stu + '<br>')
+                                    text_r.push(stu + '<br>')
                                 }
                             }
-                            td.html(text_r.join(''))
+                            var txt = ''
+                            for(var r in dict_room){
+                                txt += dict_room[r].text
+                                txt += dict_room[r].register.join('')
+                            }
+                            td.html(txt)
                             td.css('background-color', '')
                             if(data.isLearn && data.studentIsFree && data.register[student]){
                                 // ฟ้า

@@ -380,11 +380,7 @@
                                 if(sel_room == data.register[stu].Room_id){
                                     var html_stu = (stu == student)?  '<span style="color: blue;">'+stu + '</span>' : stu
                                     i++
-                                    if(i % 2 == 1){
-                                        text_r.push(html_stu + '<br>')
-                                    }else{
-                                        text_r.push(html_stu)
-                                    }
+                                    text_r.push(html_stu + '<br>')
                                 }
                                 else if(stu == student){
                                     isBusy = true
