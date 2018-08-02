@@ -51,8 +51,13 @@ class Table extends CI_Controller {
 			$data['Semester_ID'] = $this->CurrentSemester_Model->getSemester_ID();
 		}
 		$stu_hour = $this->StudentWork_Model->getHour($data['Student_id'], $data['Semester_ID']);
+		$num = $this->StudentWork_Model->getNumStudent($data['Subject_id'], $data['Section_id'], $data['Semester_ID']);
 		$maxhour = $this->Config_Model->getHour();
-		if($stu_hour >= $maxhour){
+		if($num >= 2){
+			$response['isError'] = true; 
+			$response['Message'] = 'จำนวน TA เกินที่กำหนด'; 
+		}
+		else if($stu_hour >= $maxhour){
 			$response['isError'] = true; 
 			$response['Message'] = 'ชั่วโมงการทำงานเกินที่กำหนด'; 
 		}

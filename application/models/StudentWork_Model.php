@@ -15,6 +15,15 @@ class StudentWork_Model extends CI_Model {
         $this->db->insert('StudentWork', $data);
     }
 
+    public function getNumStudent($subject_id, $section_id, $semester)
+    {
+        $sql = "SELECT count(*) as Total FROM `Section` a 
+                INNER JOIN StudentWork_tmp b on a.Subject_id = b.Subject_id AND a.Section_id = b.Section_id
+                WHERE b.Subject_id = ? and b.Section_id = ? and Semester_ID = ?";
+                $res = $this->db->query($sql, array($subject_id, $section_id, $semester));
+        return $res->result()[0]->Total;
+    }
+
     public function getHour($student, $semester)
     {
         $sql = "SELECT count(*) * 2 as TotalHour FROM `Section` a 
