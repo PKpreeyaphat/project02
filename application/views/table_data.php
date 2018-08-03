@@ -376,9 +376,24 @@
                             var td = $('tr[data-day='+day+']').find('td[data-start="'+t_r[0]+'"][data-end="'+t_r[1]+'"]'),
                                 data = time[day][t]
                             var text_r = [], i = 0, isBusy = false
+                            var duplicate = {}
+                            var dict_room = {}
                             for(var stu in data.register){
-                                if(sel_room == data.register[stu].Room_id){
+                                if(sel_room == 'All' || sel_room == data.register[stu].Room_id){
+                                    if(!duplicate[data.register[stu].Room_id]){
+                                        for(var rm in data.Room[data.register[stu].Room_id]){
+                                            var r = data.Room[data.register[stu].Room_id][rm]
+                                            text_r.push('<b>'+((sel_room == 'All')? data.register[stu].Room_name : '')+ ' กลุ่ม ' + r.Section_id + '  (' + r.Qty + ' คน)</b><br>')
+                                            dict_room[data.register[stu].Room_name] = 
+                                            { 
+                                                text: '<b>'+((sel_room == 'All')? data.register[stu].Room_name : '')+ ' กลุ่ม ' + r.Section_id + '  (' + r.Qty + ' คน)</b><br>',
+                                                register: []
+                                            }
+                                        }
+                                        duplicate[data.register[stu].Room_id] = true
+                                    }
                                     var html_stu = (stu == student)?  '<span style="color: blue;">'+stu + '</span>' : stu
+                                    dict_room[data.register[stu].Room_name].register.push(html_stu + '<br>')
                                     i++
                                     text_r.push(html_stu + '<br>')
                                 }
@@ -392,11 +407,24 @@
                                     text_r.unshift('กลุ่ม ' + r.Section_id + ' (' + r.Qty + ' คน)<br>')
                                 }
                             }
-                            td.html(text_r.join(''))
+                            var txt = '', isFull = false
+                            for(var r in dict_room){
+                                txt += dict_room[r].text
+                                txt += dict_room[r].register.join('')
+                                if(dict_room[r].register.length == 2)
+                                {
+                                    isFull = true
+                                }
+                            }
+                            td.html(txt)
                             td.css('background-color', '')
                             if(isBusy){
                                 // แดง
                                 td.css('background-color', '#ff7878')
+                            }
+                            else if(sel_room != 'All' && isFull){
+                                // เขียว
+                                td.css('background-color', '#70D09D')
                             }
                             else if(data.isLearn && data.studentIsFree && data.register[student]){
                                 // ฟ้า
@@ -427,6 +455,8 @@
             })
 
             $('#tb').on('click', 'tbody > tr > td', function(){
+                if($('#room').val() == 'All' || !$('#room').val())
+                    return
                 var day = $(this).parents('tr').data('day')
                 var t = $(this).data('start') + '-' + $(this).data('end'),
                     student = $('#student').val()
@@ -533,7 +563,7 @@
                 $.post('table/loadRoom', {data: data}, function(res){
                     var sel_room = $('#room').val()
                     res = JSON.parse(res)
-                    var html = ''
+                    var html = '<option value="All">All</option>'
                     for(var i in res){
                         html += '<option '+((sel_room == res[i].Room_id)? 'selected': '')+' data-name="'+res[i].Room_name+'" value="'+res[i].Room_id+'">'+res[i].Room_name+' ('+res[i].Room_qty+' คน)</option>'
                     }
