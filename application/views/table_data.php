@@ -319,6 +319,7 @@
                         var sh_time = time[mapDayWeek[res[i].Section_day]][time_str]
                         if(!sh_time.register[res[i].Student_id]){
                             sh_time.register[res[i].Student_id] = { 
+                                Name: res[i].Student_firstname + ' ' + res[i].Student_lastname,
                                 Section_id: res[i].Section_id,
                                 subject: res[i].Subject_id,
                                 Room_id: res[i].Room_id,
@@ -392,7 +393,9 @@
                                         }
                                         duplicate[data.register[stu].Room_id] = true
                                     }
-                                    var html_stu = (stu == student)?  '<span style="color: blue;">'+stu + '</span>' : stu
+                                    var html_stu = (stu == student)?  
+                                        '<span style="color: blue;">'+stu + ' ('+data.register[stu].Name+')</span>' : 
+                                        stu + ' ('+data.register[stu].Name+')'
                                     dict_room[data.register[stu].Room_name].register.push(html_stu + '<br>')
                                     i++
                                     text_r.push(html_stu + '<br>')
